@@ -2,6 +2,7 @@ package anaels.com.cocktailrecipe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -32,12 +36,13 @@ public class RecipeFragment extends Fragment {
     public static final String KEY_INTENT_POSITION_STEP_LIST = "keyIntentPositionStepList";
 
 
-
     //UI
     @BindView(R.id.recyclerViewIngredientsRecipes)
     RecyclerView recyclerViewIngredientsRecipes;
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
+    @BindView(R.id.recipeImageView)
+    ImageView recipeImageView;
 
     IngredientAdapter mIngredientAdapter;
     StepAdapter mStepAdapter;
@@ -69,6 +74,7 @@ public class RecipeFragment extends Fragment {
 
         //UI
         if (mRecipe != null) {
+            Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(recipeImageView);
             initRecyclerViewIngredient();
             initRecyclerViewStep();
         }

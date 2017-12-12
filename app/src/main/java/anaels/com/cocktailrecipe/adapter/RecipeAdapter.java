@@ -49,9 +49,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         viewHolder.titleRecipeTextView.setText(listRecipe.get(i).getStrDrink());
         viewHolder.servingRecipeTextView.setText(String.valueOf(listRecipe.get(i).getStrCategory()));
         //Image
-        if (listRecipe.get(i).getStrDrinkThumb() != null && !listRecipe.get(i).getStrDrinkThumb().isEmpty()) {
-            Picasso.with(mActivity).load(listRecipe.get(i).getStrDrinkThumb()).error(R.drawable.placeholder_recipe).into(viewHolder.recipeImageView);
-        }
+        Picasso.with(mActivity).load(listRecipe.get(i).getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(viewHolder.recipeImageView);
     }
 
     @Override
