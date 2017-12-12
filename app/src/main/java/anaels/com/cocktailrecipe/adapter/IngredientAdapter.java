@@ -10,21 +10,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.R;
-import anaels.com.cocktailrecipe.api.model.Ingredient;
-import anaels.com.cocktailrecipe.helper.StepHelper;
 
 
 /**
  * Display the ingredient on recipe activity
  */
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
-    private ArrayList<Ingredient> listIngredient;
+    private ArrayList<String> listIngredient;
+    private ArrayList<String> listQuantity;
     private Activity mActivity;
 
 
-    public IngredientAdapter(Activity activity, ArrayList<Ingredient> listIngredient) {
+    public IngredientAdapter(Activity activity, ArrayList<String> listIngredient, ArrayList<String> listQuantity) {
         this.mActivity = activity;
         this.listIngredient = listIngredient;
+        this.listQuantity=listQuantity;
     }
 
     @Override
@@ -36,10 +36,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
-        viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i).getIngredient()));
-        viewHolder.quantityIngredientTextView.setText(StepHelper.formatQuantityForDisplay(listIngredient.get(i).getQuantity()));
-        viewHolder.measureIngredientTextView.setText(listIngredient.get(i).getMeasure().toLowerCase());
-        //Lowe bar
+        viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i)));
+        viewHolder.quantityIngredientTextView.setText(listQuantity.get(i));
+        //Lower bar
         if (i == listIngredient.size()-1){
             viewHolder.separatorView.setVisibility(View.GONE);
         } else {
@@ -55,19 +54,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameIngredientTextView;
         TextView quantityIngredientTextView;
-        TextView measureIngredientTextView;
         View separatorView;
 
         public ViewHolder(View view) {
             super(view);
             nameIngredientTextView = (TextView) view.findViewById(R.id.nameIngredientTextView);
             quantityIngredientTextView = (TextView) view.findViewById(R.id.quantityIngredientTextView);
-            measureIngredientTextView = (TextView) view.findViewById(R.id.measureIngredientTextView);
             separatorView = view.findViewById(R.id.separatorView);
         }
     }
 
-    public void setListIngredient(ArrayList<Ingredient> listIngredient) {
+    public void setListIngredient(ArrayList<String> listIngredient) {
         this.listIngredient = listIngredient;
     }
 }

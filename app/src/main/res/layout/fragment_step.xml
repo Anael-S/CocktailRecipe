@@ -17,16 +17,10 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/videoPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/videoPlayer">
+            android:layout_below="@id/imageStepImageView">
 
             <TextView
                 android:id="@+id/instructionTextView"

@@ -12,9 +12,7 @@ import android.widget.RemoteViews;
 import anaels.com.cocktailrecipe.HomeActivity;
 import anaels.com.cocktailrecipe.R;
 import anaels.com.cocktailrecipe.RecipeActivity;
-import anaels.com.cocktailrecipe.api.model.Ingredient;
-import anaels.com.cocktailrecipe.api.model.Recipe;
-import anaels.com.cocktailrecipe.helper.StepHelper;
+import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 
 
 /**
@@ -22,7 +20,7 @@ import anaels.com.cocktailrecipe.helper.StepHelper;
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
-    static Recipe mRecipe;
+    static DrinkRecipe mRecipe;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -39,21 +37,22 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             views.setViewVisibility(R.id.addToWidgetIcon, View.VISIBLE);
             views.setViewVisibility(R.id.layoutIngredient, View.GONE);
         } else {
-            //name
-            views.setTextViewText(R.id.titleRecipeTextView, mRecipe.getName());
-
-            //Visibility
-            views.setViewVisibility(R.id.addToWidgetIcon, View.GONE);
-            views.setViewVisibility(R.id.layoutIngredient, View.VISIBLE);
-
-            //ListView ingredients
-            views.removeAllViews(R.id.listViewIngredientsRecipes);
-            for (Ingredient ingredient : mRecipe.getIngredients()) {
-                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(), R.layout.row_ingredient_widget);
-                rvIngredient.setTextViewText(R.id.tv_recipe_widget_ingredient_item, StepHelper.formatQuantityForDisplay(ingredient.getQuantity()) +
-                        String.valueOf(ingredient.getMeasure().toLowerCase()) + " " + ingredient.getIngredient());
-                views.addView(R.id.listViewIngredientsRecipes, rvIngredient);
-            }
+            //TODO : update this piece of code
+//            //name
+//            views.setTextViewText(R.id.titleRecipeTextView, mRecipe.getName());
+//
+//            //Visibility
+//            views.setViewVisibility(R.id.addToWidgetIcon, View.GONE);
+//            views.setViewVisibility(R.id.layoutIngredient, View.VISIBLE);
+//
+//            //ListView ingredients
+//            views.removeAllViews(R.id.listViewIngredientsRecipes);
+//            for (Ingredient ingredient : mRecipe.getIngredients()) {
+//                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(), R.layout.row_ingredient_widget);
+//                rvIngredient.setTextViewText(R.id.tv_recipe_widget_ingredient_item, StepHelper.formatQuantityForDisplay(ingredient.getQuantity()) +
+//                        String.valueOf(ingredient.getMeasure().toLowerCase()) + " " + ingredient.getIngredient());
+//                views.addView(R.id.listViewIngredientsRecipes, rvIngredient);
+//            }
 
             //OnClick
             Intent intentRecipe = new Intent(context, RecipeActivity.class);

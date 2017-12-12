@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.StepPagerAdapter;
 import anaels.com.cocktailrecipe.animations.ReaderViewPagerTransformer;
-import anaels.com.cocktailrecipe.api.model.Step;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,8 +23,8 @@ import butterknife.ButterKnife;
  */
 public class StepActivity extends AppCompatActivity {
 
-    Step mStep;
-    ArrayList<Step> mStepList;
+    String mStep;
+    ArrayList<String> mStepList;
     String mRecipeName;
     Context mContext;
 
@@ -51,16 +50,16 @@ public class StepActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
 
-        mStep = getIntent().getParcelableExtra(RecipeActivity.KEY_INTENT_STEP);
+        mStep = getIntent().getStringExtra(RecipeActivity.KEY_INTENT_STEP);
         mRecipeName = getIntent().getStringExtra(RecipeActivity.KEY_INTENT_RECIPE_NAME);
-        mStepList = getIntent().getParcelableArrayListExtra(RecipeActivity.KEY_INTENT_STEP_LIST);
+        mStepList = getIntent().getStringArrayListExtra(RecipeActivity.KEY_INTENT_STEP_LIST);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null && mStep == null) {
-            mStep = savedInstanceState.getParcelable(RecipeActivity.KEY_INTENT_STEP);
+            mStep = savedInstanceState.getString(RecipeActivity.KEY_INTENT_STEP);
         }
 
         //UI
@@ -71,7 +70,7 @@ public class StepActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(RecipeActivity.KEY_INTENT_STEP, mStep);
+        outState.putString(RecipeActivity.KEY_INTENT_STEP, mStep);
         super.onSaveInstanceState(outState);
     }
 
@@ -90,14 +89,14 @@ public class StepActivity extends AppCompatActivity {
         layoutPreviousStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newPos = mStep.getId() - 1;
+                int newPos = pagerDetailStep.getCurrentItem() - 1;
                 updateStep(newPos);
             }
         });
         layoutNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newPos = mStep.getId() + 1;
+                int newPos = pagerDetailStep.getCurrentItem() + 1;
                 updateStep(newPos);
             }
         });
@@ -113,8 +112,7 @@ public class StepActivity extends AppCompatActivity {
             tabDots.setVisibility(View.VISIBLE);
         }
         tabDots.setupWithViewPager(pagerDetailStep, true);
-        pagerDetailStep.setCurrentItem(mStep.getId());
-
+        pagerDetailStep.setCurrentItem(0);
     }
 
 
@@ -137,12 +135,12 @@ public class StepActivity extends AppCompatActivity {
     }
 
     private void updateFooter() {
-        if (mStep.getId() == 0) {
+        if (pagerDetailStep.getCurrentItem() == 0) {
             layoutPreviousStep.setVisibility(View.INVISIBLE);
         } else {
             layoutPreviousStep.setVisibility(View.VISIBLE);
         }
-        if (mStep.getId() == mStepList.size() - 1) {
+        if (pagerDetailStep.getCurrentItem() == mStepList.size() - 1) {
             layoutNextStep.setVisibility(View.INVISIBLE);
         } else {
             layoutNextStep.setVisibility(View.VISIBLE);

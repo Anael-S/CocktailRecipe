@@ -15,8 +15,7 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.IngredientAdapter;
 import anaels.com.cocktailrecipe.adapter.StepAdapter;
-import anaels.com.cocktailrecipe.api.model.Recipe;
-import anaels.com.cocktailrecipe.api.model.Step;
+import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,9 +24,9 @@ import butterknife.ButterKnife;
  */
 public class RecipeFragment extends Fragment {
 
-    Recipe mRecipe;
+    DrinkRecipe mRecipe;
     Context mContext;
-    ArrayList<Recipe> mRecipeList;
+    ArrayList<DrinkRecipe> mRecipeList;
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
@@ -97,7 +96,7 @@ public class RecipeFragment extends Fragment {
     private void initRecyclerViewIngredient() {
         recyclerViewIngredientsRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (mIngredientAdapter == null) {
-            mIngredientAdapter = new IngredientAdapter(getActivity(), new ArrayList<>(mRecipe.getIngredients()));
+            mIngredientAdapter = new IngredientAdapter(getActivity(), mRecipe.getIngredients(), mRecipe.getMeasures());
             recyclerViewIngredientsRecipes.setAdapter(mIngredientAdapter);
         } else {
             mIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
@@ -120,26 +119,7 @@ public class RecipeFragment extends Fragment {
     private void initRecyclerViewStep() {
         recyclerViewStepRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (mStepAdapter == null) {
-            mStepAdapter = new StepAdapter(getActivity(), new ArrayList<>(mRecipe.getSteps()), new StepAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Step item) {
-                    if (getActivity().getResources().getBoolean(R.bool.isTablet)) {
-                        final StepFragment lFragment = new StepFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, item);
-                        bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<Parcelable>(mRecipe.getSteps()));
-                        lFragment.setArguments(bundle);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragmentStep, lFragment).commit();
-                    } else {
-                        Intent i = new Intent(mContext, StepActivity.class);
-                        i.putExtra(KEY_INTENT_STEP, item);
-                        i.putExtra(KEY_INTENT_RECIPE_NAME, mRecipe.getName());
-                        i.putExtra(KEY_INTENT_STEP_LIST, new ArrayList<>(mRecipe.getSteps()));
-                        startActivity(i);
-                    }
-                }
-            });
+            mStepAdapter = new StepAdapter(getActivity(), new ArrayList<>(mRecipe.getSteps()));
             recyclerViewStepRecipes.setAdapter(mStepAdapter);
         } else {
             mStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));

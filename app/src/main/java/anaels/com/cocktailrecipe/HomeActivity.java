@@ -3,9 +3,6 @@ package anaels.com.cocktailrecipe;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +13,7 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.NetworkService;
-import anaels.com.cocktailrecipe.api.model.Recipe;
+import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +23,7 @@ import butterknife.ButterKnife;
  */
 public class HomeActivity extends AppCompatActivity {
 
-    ArrayList<Recipe> mRecipeList;
+    ArrayList<DrinkRecipe> mRecipeList;
     RecipeAdapter mRecipeAdapter;
     Context mContext;
 
@@ -72,9 +69,9 @@ public class HomeActivity extends AppCompatActivity {
         //If we have an internet connection
         if (InternetConnectionHelper.isNetworkAvailable(this)) {
             //We get our recipe from the network
-            NetworkService.getRecipes(this, new NetworkService.OnRecipeRecovered() {
+            NetworkService.getRandomRecipe(this, new NetworkService.OnRecipeRecovered() {
                 @Override
-                public void onRecipeRecovered(ArrayList<Recipe> recipeList) {
+                public void onRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
                     mRecipeList = recipeList;
                     initRecyclerView();
                 }
@@ -100,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
         if (mRecipeAdapter == null) {
             mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Recipe item) {
+                public void onItemClick(DrinkRecipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(KEY_INTENT_RECIPE, item);
                     i.putExtra(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);

@@ -25,19 +25,10 @@
             android:id="@+id/quantityIngredientTextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:padding="@dimen/extra_extra_small_padding"
             android:text="350" />
-
-        <TextView
-            android:id="@+id/measureIngredientTextView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:padding="@dimen/extra_extra_small_padding"
-            android:text="G" />
     </LinearLayout>
 
     <View

@@ -9,16 +9,15 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.RecipeActivity;
 import anaels.com.cocktailrecipe.StepFragment;
-import anaels.com.cocktailrecipe.api.model.Step;
 
 /**
  * A simple pager adapter that represents our work order step
  */
 public class StepPagerAdapter extends FragmentStatePagerAdapter {
-    ArrayList<Step> mStepList;
+    ArrayList<String> mStepList;
     int maxPos;
 
-    public StepPagerAdapter(FragmentManager fm, ArrayList<Step> stepList) {
+    public StepPagerAdapter(FragmentManager fm, ArrayList<String> stepList) {
         super(fm);
         mStepList = stepList;
         maxPos = mStepList.size()-1;
@@ -29,8 +28,8 @@ public class StepPagerAdapter extends FragmentStatePagerAdapter {
         //We pass the current step into the fragment in order to instantiate the right view
         final StepFragment lFragment = new StepFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, mStepList.get(position));
-        bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, mStepList);
+        bundle.putString(RecipeActivity.KEY_INTENT_STEP, mStepList.get(position));
+        bundle.putStringArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, mStepList);
         lFragment.setArguments(bundle);
         return lFragment;
     }

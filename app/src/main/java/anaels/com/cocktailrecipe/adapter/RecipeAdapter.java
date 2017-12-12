@@ -13,24 +13,24 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.R;
-import anaels.com.cocktailrecipe.api.model.Recipe;
+import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 
 
 /**
  * Display the recipe on the main activity
  */
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
-    private ArrayList<Recipe> listRecipe;
+    private ArrayList<DrinkRecipe> listRecipe;
     private Activity mActivity;
     private final OnItemClickListener listener;
 
 
     public interface OnItemClickListener {
-        void onItemClick(Recipe item);
+        void onItemClick(DrinkRecipe item);
     }
 
 
-    public RecipeAdapter(Activity activity, ArrayList<Recipe> listRecipe, OnItemClickListener listener) {
+    public RecipeAdapter(Activity activity, ArrayList<DrinkRecipe> listRecipe, OnItemClickListener listener) {
         this.mActivity = activity;
         this.listRecipe = listRecipe;
         this.listener = listener;
@@ -46,11 +46,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
-        viewHolder.titleRecipeTextView.setText(listRecipe.get(i).getName());
-        viewHolder.servingRecipeTextView.setText(String.valueOf(listRecipe.get(i).getServings()));
+        viewHolder.titleRecipeTextView.setText(listRecipe.get(i).getStrDrink());
+        viewHolder.servingRecipeTextView.setText(String.valueOf(listRecipe.get(i).getStrCategory()));
         //Image
-        if (listRecipe.get(i).getImage() != null && !listRecipe.get(i).getImage().isEmpty()) {
-            Picasso.with(mActivity).load(listRecipe.get(i).getImage()).error(R.drawable.placeholder_recipe).into(viewHolder.recipeImageView);
+        if (listRecipe.get(i).getStrDrinkThumb() != null && !listRecipe.get(i).getStrDrinkThumb().isEmpty()) {
+            Picasso.with(mActivity).load(listRecipe.get(i).getStrDrinkThumb()).error(R.drawable.placeholder_recipe).into(viewHolder.recipeImageView);
         }
     }
 
@@ -84,7 +84,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
     }
 
-    public void setListRecipe(ArrayList<Recipe> listRecipe) {
+    public void setListRecipe(ArrayList<DrinkRecipe> listRecipe) {
         this.listRecipe = listRecipe;
     }
 }

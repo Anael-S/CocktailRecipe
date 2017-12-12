@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import anaels.com.cocktailrecipe.api.model.Recipe;
-import anaels.com.cocktailrecipe.helper.StepHelper;
+import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,9 +24,9 @@ import butterknife.ButterKnife;
  */
 public class RecipeActivity extends AppCompatActivity {
 
-    Recipe mRecipe;
+    DrinkRecipe mRecipe;
     Context mContext;
-    ArrayList<Recipe> mRecipeList;
+    ArrayList<DrinkRecipe> mRecipeList;
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
@@ -65,7 +63,7 @@ public class RecipeActivity extends AppCompatActivity {
         if (mRecipe != null) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setTitle(mRecipe.getName());
+                getSupportActionBar().setTitle(mRecipe.getStrDrink());
             }
         }
 
@@ -84,13 +82,10 @@ public class RecipeActivity extends AppCompatActivity {
 
         //If we're on a tablet && its not a screen rotation
         if (fragmentStep != null && savedInstanceState == null) {
-            //We select the first step
-            int lastSelectedStep = StepHelper.getSelectStepPosition(new ArrayList<>(mRecipe.getSteps()));
-            mRecipe.getSteps().get(lastSelectedStep).setSelected(true);
             StepFragment fragmentStep = new StepFragment();
             Bundle bundle = new Bundle();
-            bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));
-            bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<Parcelable>(mRecipe.getSteps()));
+            bundle.putString(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));
+            bundle.putStringArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<>(mRecipe.getSteps()));
             fragmentStep.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentStep, fragmentStep).commit();
