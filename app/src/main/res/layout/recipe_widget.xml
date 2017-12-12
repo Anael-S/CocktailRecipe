@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widgetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#09C"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/titleRecipeTextView"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:gravity="center"
+        android:paddingBottom="@dimen/large_padding"
+        android:paddingTop="@dimen/large_padding"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/addToWidgetIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_icon_add_widget"
+        android:src="@drawable/ic_add_to_widget_black"
+        android:visibility="gone" />
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutIngredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/extra_small_padding">
+
+        <TextView
+            android:id="@+id/textViewIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#80000000"
+            android:gravity="start"
+            android:paddingBottom="@dimen/extra_extra_small_padding"
+            android:paddingEnd="@dimen/small_padding"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingTop="@dimen/extra_extra_small_padding"
+            android:text="@string/ingredients"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/listViewIngredientsRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewIngredients"
+            android:layout_marginTop="@dimen/extra_extra_small_padding"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/extra_small_padding"
+            android:paddingRight="@dimen/extra_small_padding"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/row_ingredient_widget" />
+    </RelativeLayout>
+
+</LinearLayout>

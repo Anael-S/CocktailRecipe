@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/addToWidgetButton"
+        android:title="Add to widget"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_add_widget"
+        />
+</menu>

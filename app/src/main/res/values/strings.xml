@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">BakingRecipe</string>
+
+    <string name="error_fetch_recipe">An error occurred, try again.</string>
+
+    <string name="servings">The number of people that this dish can serve</string>
+
+    <string name="ingredient_name">%1$s:</string>
+
+    <string name="step_number">Step %1$s:</string>
+    <string name="next_step">Next</string>
+    <string name="previous_step">Previous</string>
+
+    <string name="instructions">Instructions:</string>
+    <string name="ingredients">Ingredients:</string>
+
+    <string name="retry">retry</string>
+    <string name="no_internet">No internet connection.</string>
+
+    <string name="recipe_name_separator">%1$s - Introduction</string>
+
+    <string name="unknown_error">An unknown error occurred, try again.</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="choose_recipe">Please select a recipe and click on the button</string>
+    <string name="added_to_widget">Added to widget</string>
+</resources>

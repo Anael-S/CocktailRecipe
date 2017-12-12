@@ -1,0 +1,6 @@
+<resources>
+    <bool name="isTablet">true</bool>
+    <dimen name="card_width">300dp</dimen>
+    <dimen name="card_height">250dp</dimen>
+    <integer name="number_column">3</integer>
+</resources>

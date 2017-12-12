@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardViewIngredientsRecipes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    app:cardCornerRadius="@dimen/card_corner"
+    app:cardElevation="@dimen/small_card_elevation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/stepNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_padding"
+            android:gravity="start"
+            android:padding="@dimen/extra_small_padding"
+            android:text="@string/step_number"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/stepShortDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/stepNumberTextView"
+            android:padding="@dimen/extra_small_padding" />
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
