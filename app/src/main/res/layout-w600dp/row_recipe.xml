@@ -46,7 +46,7 @@
                 android:padding="@dimen/small_padding">
 
                 <TextView
-                    android:id="@+id/servingRecipeTextView"
+                    android:id="@+id/typeRecipeTextView"
                     style="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

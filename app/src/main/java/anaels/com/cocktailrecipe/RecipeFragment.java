@@ -28,9 +28,6 @@ public class RecipeFragment extends Fragment {
     Context mContext;
     ArrayList<DrinkRecipe> mRecipeList;
 
-    public static final String KEY_INTENT_STEP = "keyIntentStep";
-    public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
-    public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
     public static final String KEY_INTENT_POSITION_INGREDIENT_LIST = "keyIntentPositionIngredientList";
     public static final String KEY_INTENT_POSITION_STEP_LIST = "keyIntentPositionStepList";
 

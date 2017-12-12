@@ -72,8 +72,14 @@ public class HomeActivity extends AppCompatActivity {
             CocktailApiHelper.getRandomCocktail(this, new CocktailApiHelper.OnCocktailRecipeRecovered() {
                 @Override
                 public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
-                    mRecipeList = recipeList;
-                    initRecyclerView();
+                    if (mRecipeList == null) mRecipeList = new ArrayList<DrinkRecipe>();
+                    mRecipeList.addAll(recipeList);
+                    //HOTFIX //TODO //FIXME //RM just to have some recipe to start
+                    if (mRecipeList.size() <3){
+                        loadRecipes();
+                    } else {
+                        initRecyclerView();
+                    }
                 }
             }, new CocktailApiHelper.OnError() {
                 @Override

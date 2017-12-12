@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ListDrink implements Parcelable {
 
-    @SerializedName("drinkRecipes")
+    @SerializedName("drinks")
     @Expose
     private List<DrinkRecipe> drinkRecipes = null;
 

@@ -69,7 +69,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             super(view);
             mView = itemView;
             titleRecipeTextView = (TextView) view.findViewById(R.id.titleRecipeTextView);
-            servingRecipeTextView = (TextView) view.findViewById(R.id.servingRecipeTextView);
+            servingRecipeTextView = (TextView) view.findViewById(R.id.typeRecipeTextView);
             recipeImageView = (ImageView) view.findViewById(R.id.recipeImageView);
 
             mView.setOnClickListener(new View.OnClickListener() {

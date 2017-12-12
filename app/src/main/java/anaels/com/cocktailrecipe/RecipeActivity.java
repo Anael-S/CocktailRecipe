@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -37,8 +38,8 @@ public class RecipeActivity extends AppCompatActivity {
     FrameLayout fragmentStep;
 
     RecipeFragment fragmentRecipe;
-    int positionIngredientList;
-    int positionStepList;
+    Parcelable positionIngredientList;
+    Parcelable positionStepList;
 
 
     @Override
@@ -47,16 +48,14 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
         mContext = this;
-        positionIngredientList = 0;
-        positionStepList = 0;
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
         mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
 
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
-            positionIngredientList = savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
-            positionStepList = savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
+            positionIngredientList = savedInstanceState.getParcelable(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
+            positionStepList = savedInstanceState.getParcelable(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
         }
 
         //UI
@@ -73,8 +72,8 @@ public class RecipeActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
             bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
-            bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
-            bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, positionStepList);
+            bundle.putParcelable(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
+            bundle.putParcelable(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, positionStepList);
             fragmentRecipe.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentRecipe, fragmentRecipe).commit();

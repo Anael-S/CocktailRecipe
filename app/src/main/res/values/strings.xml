@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BakingRecipe</string>
+    <string name="app_name">EZ Cocktails</string>
 
     <string name="error_fetch_recipe">An error occurred, try again.</string>
 
@@ -7,7 +7,7 @@
 
     <string name="ingredient_name">%1$s:</string>
 
-    <string name="step_number">Step %1$i:</string>
+    <string name="step_number">Step %1$s:</string>
     <string name="next_step">Next</string>
     <string name="previous_step">Previous</string>
 

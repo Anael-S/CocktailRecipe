@@ -142,13 +142,20 @@ public class DrinkRecipe implements Parcelable {
             listInstructions = new ArrayList<>();
             String fullInstructions = getStrInstructions();
             String splittedInstructions[] = fullInstructions.split("\\r\\n");
-            if (splittedInstructions != null && splittedInstructions.length > 1) {
+            String splittedInstructionsBackUp[] = fullInstructions.split("\\.");
+            if (splittedInstructions.length > 1) {
                 for (String lInstruction : splittedInstructions) {
                     if (lInstruction != null && !lInstruction.isEmpty()) {
                         listInstructions.add(lInstruction);
                     }
                 }
-            } else {
+            } else if (splittedInstructionsBackUp.length > 1) {
+                for (String lInstruction : splittedInstructionsBackUp) {
+                    if (lInstruction != null && !lInstruction.isEmpty()) {
+                        listInstructions.add(lInstruction);
+                    }
+                }
+            }else {
                 listInstructions.add(fullInstructions);
             }
         }
@@ -527,6 +534,9 @@ public class DrinkRecipe implements Parcelable {
         this.dateModified = dateModified;
     }
 
+    public DrinkRecipe() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -574,17 +584,17 @@ public class DrinkRecipe implements Parcelable {
         dest.writeString(this.strMeasure14);
         dest.writeString(this.strMeasure15);
         dest.writeString(this.dateModified);
-    }
-
-    public DrinkRecipe() {
+        dest.writeStringList(this.listInstructions);
+        dest.writeStringList(this.listIngredients);
+        dest.writeStringList(this.listMeasures);
     }
 
     protected DrinkRecipe(Parcel in) {
         this.idDrink = in.readString();
         this.strDrink = in.readString();
-        this.strVideo = in.readParcelable(Object.class.getClassLoader());
+        this.strVideo = in.readString();
         this.strCategory = in.readString();
-        this.strIBA = in.readParcelable(Object.class.getClassLoader());
+        this.strIBA = in.readString();
         this.strAlcoholic = in.readString();
         this.strGlass = in.readString();
         this.strInstructions = in.readString();
@@ -620,9 +630,12 @@ public class DrinkRecipe implements Parcelable {
         this.strMeasure14 = in.readString();
         this.strMeasure15 = in.readString();
         this.dateModified = in.readString();
+        this.listInstructions = in.createStringArrayList();
+        this.listIngredients = in.createStringArrayList();
+        this.listMeasures = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<DrinkRecipe> CREATOR = new Parcelable.Creator<DrinkRecipe>() {
+    public static final Creator<DrinkRecipe> CREATOR = new Creator<DrinkRecipe>() {
         @Override
         public DrinkRecipe createFromParcel(Parcel source) {
             return new DrinkRecipe(source);
