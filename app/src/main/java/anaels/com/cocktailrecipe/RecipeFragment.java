@@ -41,8 +41,7 @@ public class RecipeFragment extends Fragment {
     RecyclerView recyclerViewIngredientsRecipes;
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
-    @BindView(R.id.recipeImageView)
-    ImageView recipeImageView;
+
 
     IngredientAdapter mIngredientAdapter;
     StepAdapter mStepAdapter;
@@ -74,7 +73,6 @@ public class RecipeFragment extends Fragment {
 
         //UI
         if (mRecipe != null) {
-            Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(recipeImageView);
             initRecyclerViewIngredient();
             initRecyclerViewStep();
         }

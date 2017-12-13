@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,8 @@ public class RecipeActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.fragmentStep)
     FrameLayout fragmentStep;
+    @BindView(R.id.recipeImageView)
+    ImageView recipeImageView;
 
     RecipeFragment fragmentRecipe;
     Parcelable positionIngredientList;
@@ -60,6 +65,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         //UI
         if (mRecipe != null) {
+            Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(recipeImageView);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(mRecipe.getStrDrink());
