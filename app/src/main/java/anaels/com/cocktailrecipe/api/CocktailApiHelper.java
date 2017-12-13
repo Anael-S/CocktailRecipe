@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import anaels.com.cocktailrecipe.BuildConfig;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.api.model.ListDrink;
 import anaels.com.cocktailrecipe.helper.SerializeHelper;
@@ -22,7 +23,7 @@ import anaels.com.cocktailrecipe.helper.SerializeHelper;
 public class CocktailApiHelper {
 
     private static final String BASE_URL_API = "http://www.thecocktaildb.com/api/json/v1/";
-    private static final String TEMP_TOKEN = "1/";
+    private static final String API_TOKEN = BuildConfig.API_KEY + "/";
     private static final String URL_RANDOM_RECIPE = "random.php";
     private static final String URL_SEARCH_BY_NAME = "search.php?s=";
     private static final String URL_SEARCH_BY_INGREDIENT = "filter.php?i=";
@@ -80,7 +81,7 @@ public class CocktailApiHelper {
         } else {
             filterUrl += FILTER_ORDINARY_DRINK + "&" + FILTER_COCKTAIL;
         }
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_SEARCH_BY_NAME + filterUrl, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_SEARCH_BY_NAME + filterUrl, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
@@ -114,7 +115,7 @@ public class CocktailApiHelper {
             }
             firstTimeLoop = false;
         }
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_SEARCH_BY_NAME + filterIngredients, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_SEARCH_BY_NAME + filterIngredients, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
@@ -138,7 +139,7 @@ public class CocktailApiHelper {
     public static void getIngredientList(Context context, final OnIngredientListRecovered onIngredientListRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_LIST_INGREDIENTS, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_LIST_INGREDIENTS, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ArrayList<String>>() {
@@ -162,7 +163,7 @@ public class CocktailApiHelper {
     public static void searchCocktailByName(Context context, String cocktailName, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_SEARCH_BY_NAME + cocktailName, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_SEARCH_BY_NAME + cocktailName, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
@@ -186,7 +187,7 @@ public class CocktailApiHelper {
     public static void searchCocktailById(Context context, String cocktailId, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_DETAIL_COCKTAIL + cocktailId, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_DETAIL_COCKTAIL + cocktailId, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
@@ -217,7 +218,7 @@ public class CocktailApiHelper {
     public static void getRandomCocktail(Context context, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + TEMP_TOKEN + URL_RANDOM_RECIPE, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_RANDOM_RECIPE, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
