@@ -25,17 +25,16 @@
             android:name=".RecipeActivity"
             android:theme="@style/AppTheme"
             android:parentActivityName=".HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".HomeActivity">
         </activity>
         <activity
             android:name=".StepActivity"
             android:theme="@style/AppTheme"
             android:parentActivityName=".RecipeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
 
         <receiver android:name=".widget.RecipeWidgetProvider">

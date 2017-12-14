@@ -3,10 +3,12 @@ package anaels.com.cocktailrecipe;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerViewRecipes)
     RecyclerView recyclerViewRecipes;
+    @BindView(R.id.fabSearch)
+    FloatingActionButton fabSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,15 @@ public class HomeActivity extends AppCompatActivity {
         }
         ButterKnife.bind(this);
         mContext = this;
+
+        //Button onClick
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, SearchActivity.class);
+                startActivity(i);
+            }
+        });
 
         //If we already got our recipe lists, we recover them
         if (savedInstanceState != null) {
