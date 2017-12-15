@@ -4,6 +4,7 @@
     <dimen name="card_width">230dp</dimen>
     <dimen name="card_height">250dp</dimen>
     <integer name="number_column">2</integer>
+    <integer name="number_column_search">3</integer>
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="icon_size">50dp</dimen>
 </resources>

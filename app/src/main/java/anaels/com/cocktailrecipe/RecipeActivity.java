@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
@@ -48,7 +49,7 @@ public class RecipeActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
@@ -63,6 +64,28 @@ public class RecipeActivity extends AppCompatActivity {
             positionStepList = savedInstanceState.getParcelable(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
         }
 
+        //We don't have to load it
+        if (mRecipe.getDateModified() != null) {
+            loadUI(savedInstanceState);
+        } else {
+            //We load the recipe
+            CocktailApiHelper.searchCocktailById(this, mRecipe.getIdDrink(), new CocktailApiHelper.OnCocktailRecipeRecovered() {
+                @Override
+                public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> drinkRecipeList) {
+                    mRecipe = drinkRecipeList.get(0);
+                    loadUI(savedInstanceState);
+                }
+            }, new CocktailApiHelper.OnError() {
+                @Override
+                public void onError() {
+                    Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+    }
+
+    private void loadUI(Bundle savedInstanceState){
         //UI
         if (mRecipe != null) {
             Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(recipeImageView);

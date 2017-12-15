@@ -88,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (mRecipeList == null) mRecipeList = new ArrayList<DrinkRecipe>();
                     mRecipeList.addAll(recipeList);
                     //HOTFIX //TODO //FIXME //RM just to have some recipe to start
-                    if (mRecipeList.size() <3){
+                    if (mRecipeList.size() < 3) {
                         loadRecipes();
                     } else {
                         initRecyclerView();
@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
             }, new CocktailApiHelper.OnError() {
                 @Override
                 public void onError() {
-                    Toast.makeText(mContext,getString(R.string.no_internet),Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -108,13 +108,13 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void initRecyclerView() {
         recyclerViewRecipes.setHasFixedSize(true);
-        if (getResources().getBoolean(R.bool.isTablet)){
+        if (getResources().getBoolean(R.bool.isTablet)) {
             recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.number_column)));
         } else {
             recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
         }
         if (mRecipeAdapter == null) {
-            mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
+            mRecipeAdapter = new RecipeAdapter(this, true, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DrinkRecipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ramotion.foldingcell.FoldingCell;
@@ -49,6 +50,8 @@ public class SearchActivity extends AppCompatActivity {
     CheckBox checkBoxCocktail;
     @BindView(R.id.checkBoxOrdinaryDrink)
     CheckBox checkBoxOrdinaryDrink;
+    @BindView(R.id.nameEditText)
+    EditText nameEditText;
 
 
     boolean isSearchLayoutFolded;
@@ -68,6 +71,10 @@ public class SearchActivity extends AppCompatActivity {
         foldingCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isSearchLayoutFolded) {
+                    //We empty the name search
+                    nameEditText.setText("");
+                }
                 foldingCell.toggle(!isSearchLayoutFolded);
                 isSearchLayoutFolded = !isSearchLayoutFolded;
             }
@@ -97,40 +104,70 @@ public class SearchActivity extends AppCompatActivity {
     private void loadRecipes() {
         //If we have an internet connection
         if (InternetConnectionHelper.isNetworkAvailable(this)) {
-            String filterAlcoholic = null;
-            String filterTypeOfDrink = null;
-            if (checkBoxAlcoholic.isChecked() && !checkBoxNonalcoholic.isChecked()) {
-                filterAlcoholic = CocktailApiHelper.FILTER_ALCOHOLIC;
-            } else if (checkBoxNonalcoholic.isChecked() && !checkBoxAlcoholic.isChecked()) {
-                filterAlcoholic = CocktailApiHelper.FILTER_NON_ALCOHOLIC;
+            //If the name is filled up, we search by name
+            if (!nameEditText.getText().toString().isEmpty()) {
+                loadCocktailByName();
+            } else { //otherwise we search them by filters : ingredients + type
+                loadCocktailByFilter();
             }
-            if (checkBoxOrdinaryDrink.isChecked() && !checkBoxCocktail.isChecked()) {
-                filterTypeOfDrink = CocktailApiHelper.FILTER_ORDINARY_DRINK;
-            } else if (checkBoxCocktail.isChecked() && !checkBoxOrdinaryDrink.isChecked()) {
-                filterTypeOfDrink = CocktailApiHelper.FILTER_COCKTAIL;
-            }
-            //We get our recipe from the network
-            CocktailApiHelper.searchCocktailByFilters(this, null, filterAlcoholic, filterTypeOfDrink, new CocktailApiHelper.OnCocktailRecipeRecovered() {
-                @Override
-                public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
-                    if (mRecipeList == null) mRecipeList = new ArrayList<DrinkRecipe>();
-                    mRecipeList.addAll(recipeList);
-                    //HOTFIX //TODO //FIXME //RM just to have some recipe to start
-                    if (mRecipeList.size() < 3) {
-                        loadRecipes();
-                    } else {
-                        initRecyclerView();
-                    }
-                }
-            }, new CocktailApiHelper.OnError() {
-                @Override
-                public void onError() {
-                    Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
-                }
-            });
         } else {
             Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void loadCocktailByName() {
+        String lNameCocktail = nameEditText.getText().toString();
+        //We get our recipe from the network
+        CocktailApiHelper.searchCocktailByName(this, lNameCocktail, new CocktailApiHelper.OnCocktailRecipeRecovered() {
+            @Override
+            public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
+                mRecipeList = new ArrayList<DrinkRecipe>();
+                if (recipeList != null && recipeList.size() > 0) {
+                    mRecipeList.addAll(recipeList);
+                } else {
+                    Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
+                }
+                initRecyclerView();
+            }
+        }, new CocktailApiHelper.OnError() {
+            @Override
+            public void onError() {
+                Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void loadCocktailByFilter() {
+        String filterAlcoholic = null;
+        String filterTypeOfDrink = null;
+        if (checkBoxAlcoholic.isChecked() && !checkBoxNonalcoholic.isChecked()) {
+            filterAlcoholic = CocktailApiHelper.FILTER_ALCOHOLIC;
+        } else if (checkBoxNonalcoholic.isChecked() && !checkBoxAlcoholic.isChecked()) {
+            filterAlcoholic = CocktailApiHelper.FILTER_NON_ALCOHOLIC;
+        }
+        if (checkBoxOrdinaryDrink.isChecked() && !checkBoxCocktail.isChecked()) {
+            filterTypeOfDrink = CocktailApiHelper.FILTER_ORDINARY_DRINK;
+        } else if (checkBoxCocktail.isChecked() && !checkBoxOrdinaryDrink.isChecked()) {
+            filterTypeOfDrink = CocktailApiHelper.FILTER_COCKTAIL;
+        }
+        //We get our recipe from the network
+        CocktailApiHelper.searchCocktailByFilters(this, null, filterAlcoholic, filterTypeOfDrink, new CocktailApiHelper.OnCocktailRecipeRecovered() {
+            @Override
+            public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
+                mRecipeList = new ArrayList<DrinkRecipe>();
+                if (recipeList != null && recipeList.size() > 0) {
+                    mRecipeList.addAll(recipeList);
+                } else {
+                    Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
+                }
+                initRecyclerView();
+            }
+        }, new CocktailApiHelper.OnError() {
+            @Override
+            public void onError() {
+                Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
@@ -138,18 +175,13 @@ public class SearchActivity extends AppCompatActivity {
      */
     private void initRecyclerView() {
         recyclerViewRecipes.setHasFixedSize(true);
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.number_column)));
-        } else {
-            recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
-        }
+        recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.number_column_search)));
         if (mRecipeAdapter == null) {
-            mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
+            mRecipeAdapter = new RecipeAdapter(this, false, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DrinkRecipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(HomeActivity.KEY_INTENT_RECIPE, item);
-                    i.putExtra(SearchActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
                     startActivity(i);
                 }
             });

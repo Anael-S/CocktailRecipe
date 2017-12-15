@@ -23,6 +23,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private ArrayList<DrinkRecipe> listRecipe;
     private Activity mActivity;
     private final OnItemClickListener listener;
+    private boolean isSingleColumn;
 
 
     public interface OnItemClickListener {
@@ -30,16 +31,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
 
-    public RecipeAdapter(Activity activity, ArrayList<DrinkRecipe> listRecipe, OnItemClickListener listener) {
+    public RecipeAdapter(Activity activity, boolean isSingleColumn, ArrayList<DrinkRecipe> listRecipe, OnItemClickListener listener) {
         this.mActivity = activity;
         this.listRecipe = listRecipe;
         this.listener = listener;
+        this.isSingleColumn = isSingleColumn;
 
     }
 
     @Override
     public RecipeAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_recipe, viewGroup, false);
+        View view;
+        if (isSingleColumn) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_recipe, viewGroup, false);
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_recipe_search, viewGroup, false);
+        }
         return new ViewHolder(view);
     }
 

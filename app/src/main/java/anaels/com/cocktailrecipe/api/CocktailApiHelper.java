@@ -81,13 +81,13 @@ public class CocktailApiHelper {
         } else {
             filterUrl += FILTER_ORDINARY_DRINK + "&" + FILTER_COCKTAIL;
         }
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_SEARCH_BY_NAME + filterUrl, new com.android.volley.Response.Listener<String>() {
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + filterUrl, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
                 }.getType();
                 ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
-                if (drinkList != null && drinkList.getDrinkRecipes() != null && !drinkList.getDrinkRecipes().isEmpty()) {
+                if (drinkList != null) {
                     onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(drinkList.getDrinkRecipes()));
                 } else {
                     onError.onError();
