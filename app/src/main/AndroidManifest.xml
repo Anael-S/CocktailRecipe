@@ -47,6 +47,11 @@
                 android:resource="@xml/recipe_widget_info" />
         </receiver>
 
+        <provider
+            android:name=".persistence.RecipesProvider"
+            android:authorities="anaels.com.cocktailrecipe"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -132,6 +132,15 @@ public class DrinkRecipe implements Parcelable {
     @Expose
     private String dateModified;
 
+    private boolean isFav;
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
+    }
 
     /**
      * HOTIFX : The API is kinda... lame? so we're forced to recreate the list here...
@@ -169,21 +178,21 @@ public class DrinkRecipe implements Parcelable {
     public ArrayList<String> getIngredients() {
         if (listIngredients == null) {
             listIngredients = new ArrayList<>();
-            if (strIngredient1 != null && !strIngredient1.isEmpty()) listIngredients.add(strIngredient1);
-            if (strIngredient2 != null && !strIngredient2.isEmpty()) listIngredients.add(strIngredient2);
-            if (strIngredient3 != null && !strIngredient3.isEmpty()) listIngredients.add(strIngredient3);
-            if (strIngredient4 != null && !strIngredient4.isEmpty()) listIngredients.add(strIngredient4);
-            if (strIngredient5 != null && !strIngredient5.isEmpty()) listIngredients.add(strIngredient5);
-            if (strIngredient6 != null && !strIngredient6.isEmpty()) listIngredients.add(strIngredient6);
-            if (strIngredient7 != null && !strIngredient7.isEmpty()) listIngredients.add(strIngredient7);
-            if (strIngredient8 != null && !strIngredient8.isEmpty()) listIngredients.add(strIngredient8);
-            if (strIngredient9 != null && !strIngredient9.isEmpty()) listIngredients.add(strIngredient9);
-            if (strIngredient10 != null && !strIngredient10.isEmpty()) listIngredients.add(strIngredient10);
-            if (strIngredient11 != null && !strIngredient11.isEmpty()) listIngredients.add(strIngredient11);
-            if (strIngredient12 != null && !strIngredient12.isEmpty()) listIngredients.add(strIngredient12);
-            if (strIngredient13 != null && !strIngredient13.isEmpty()) listIngredients.add(strIngredient13);
-            if (strIngredient14 != null && !strIngredient14.isEmpty()) listIngredients.add(strIngredient14);
-            if (strIngredient15 != null && !strIngredient15.isEmpty()) listIngredients.add(strIngredient15);
+            if (strIngredient1 != null && !strIngredient1.isEmpty()) listIngredients.add(strIngredient1.trim());
+            if (strIngredient2 != null && !strIngredient2.isEmpty()) listIngredients.add(strIngredient2.trim());
+            if (strIngredient3 != null && !strIngredient3.isEmpty()) listIngredients.add(strIngredient3.trim());
+            if (strIngredient4 != null && !strIngredient4.isEmpty()) listIngredients.add(strIngredient4.trim());
+            if (strIngredient5 != null && !strIngredient5.isEmpty()) listIngredients.add(strIngredient5.trim());
+            if (strIngredient6 != null && !strIngredient6.isEmpty()) listIngredients.add(strIngredient6.trim());
+            if (strIngredient7 != null && !strIngredient7.isEmpty()) listIngredients.add(strIngredient7.trim());
+            if (strIngredient8 != null && !strIngredient8.isEmpty()) listIngredients.add(strIngredient8.trim());
+            if (strIngredient9 != null && !strIngredient9.isEmpty()) listIngredients.add(strIngredient9.trim());
+            if (strIngredient10 != null && !strIngredient10.isEmpty()) listIngredients.add(strIngredient10.trim());
+            if (strIngredient11 != null && !strIngredient11.isEmpty()) listIngredients.add(strIngredient11.trim());
+            if (strIngredient12 != null && !strIngredient12.isEmpty()) listIngredients.add(strIngredient12.trim());
+            if (strIngredient13 != null && !strIngredient13.isEmpty()) listIngredients.add(strIngredient13.trim());
+            if (strIngredient14 != null && !strIngredient14.isEmpty()) listIngredients.add(strIngredient14.trim());
+            if (strIngredient15 != null && !strIngredient15.isEmpty()) listIngredients.add(strIngredient15.trim());
         }
         return listIngredients;
     }
@@ -195,21 +204,21 @@ public class DrinkRecipe implements Parcelable {
     public ArrayList<String> getMeasures() {
         if (listMeasures == null) {
             listMeasures = new ArrayList<>();
-            if (strMeasure1 != null && !strMeasure1.isEmpty()) listMeasures.add(strMeasure1);
-            if (strMeasure2 != null && !strMeasure2.isEmpty()) listMeasures.add(strMeasure2);
-            if (strMeasure3 != null && !strMeasure3.isEmpty()) listMeasures.add(strMeasure3);
-            if (strMeasure4 != null && !strMeasure4.isEmpty()) listMeasures.add(strMeasure4);
-            if (strMeasure5 != null && !strMeasure5.isEmpty()) listMeasures.add(strMeasure5);
-            if (strMeasure6 != null && !strMeasure6.isEmpty()) listMeasures.add(strMeasure6);
-            if (strMeasure7 != null && !strMeasure7.isEmpty()) listMeasures.add(strMeasure7);
-            if (strMeasure8 != null && !strMeasure8.isEmpty()) listMeasures.add(strMeasure8);
-            if (strMeasure9 != null && !strMeasure9.isEmpty()) listMeasures.add(strMeasure9);
-            if (strMeasure10 != null && !strMeasure10.isEmpty()) listMeasures.add(strMeasure10);
-            if (strMeasure11 != null && !strMeasure11.isEmpty()) listMeasures.add(strMeasure11);
-            if (strMeasure12 != null && !strMeasure12.isEmpty()) listMeasures.add(strMeasure12);
-            if (strMeasure13 != null && !strMeasure13.isEmpty()) listMeasures.add(strMeasure13);
-            if (strMeasure14 != null && !strMeasure14.isEmpty()) listMeasures.add(strMeasure14);
-            if (strMeasure15 != null && !strMeasure15.isEmpty()) listMeasures.add(strMeasure15);
+            if (strMeasure1 != null && !strMeasure1.isEmpty()) listMeasures.add(strMeasure1.trim());
+            if (strMeasure2 != null && !strMeasure2.isEmpty()) listMeasures.add(strMeasure2.trim());
+            if (strMeasure3 != null && !strMeasure3.isEmpty()) listMeasures.add(strMeasure3.trim());
+            if (strMeasure4 != null && !strMeasure4.isEmpty()) listMeasures.add(strMeasure4.trim());
+            if (strMeasure5 != null && !strMeasure5.isEmpty()) listMeasures.add(strMeasure5.trim());
+            if (strMeasure6 != null && !strMeasure6.isEmpty()) listMeasures.add(strMeasure6.trim());
+            if (strMeasure7 != null && !strMeasure7.isEmpty()) listMeasures.add(strMeasure7.trim());
+            if (strMeasure8 != null && !strMeasure8.isEmpty()) listMeasures.add(strMeasure8.trim());
+            if (strMeasure9 != null && !strMeasure9.isEmpty()) listMeasures.add(strMeasure9.trim());
+            if (strMeasure10 != null && !strMeasure10.isEmpty()) listMeasures.add(strMeasure10.trim());
+            if (strMeasure11 != null && !strMeasure11.isEmpty()) listMeasures.add(strMeasure11.trim());
+            if (strMeasure12 != null && !strMeasure12.isEmpty()) listMeasures.add(strMeasure12.trim());
+            if (strMeasure13 != null && !strMeasure13.isEmpty()) listMeasures.add(strMeasure13.trim());
+            if (strMeasure14 != null && !strMeasure14.isEmpty()) listMeasures.add(strMeasure14.trim());
+            if (strMeasure15 != null && !strMeasure15.isEmpty()) listMeasures.add(strMeasure15.trim());
         }
         return listMeasures;
     }
@@ -587,6 +596,17 @@ public class DrinkRecipe implements Parcelable {
         dest.writeStringList(this.listInstructions);
         dest.writeStringList(this.listIngredients);
         dest.writeStringList(this.listMeasures);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DrinkRecipe recipe = (DrinkRecipe) o;
+
+        return idDrink != null ? idDrink.equals(recipe.idDrink) : recipe.idDrink == null;
+
     }
 
     protected DrinkRecipe(Parcel in) {

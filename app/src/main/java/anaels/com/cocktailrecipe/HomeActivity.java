@@ -1,7 +1,11 @@
 package anaels.com.cocktailrecipe;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,20 +21,25 @@ import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
+import anaels.com.cocktailrecipe.persistence.RecipeContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Main activity, display the list of recipes
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     ArrayList<DrinkRecipe> mRecipeList;
+    ArrayList<DrinkRecipe> mFavoriteRecipeList;
     RecipeAdapter mRecipeAdapter;
     Context mContext;
 
     public static final String KEY_INTENT_RECIPE = "keyIntentRecipe";
     public static final String KEY_INTENT_LIST_RECIPE = "keyIntentRecipeList";
+    public static final String KEY_INTENT_LIST_FAV_RECIPE = "keyIntentFavorite";
+
+    private static final int RECIPE_DB = 0 ;
 
 
     @BindView(R.id.recyclerViewRecipes)
@@ -62,9 +71,10 @@ public class HomeActivity extends AppCompatActivity {
             // Restore value of members from saved state
             mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
             initRecyclerView();
-        } else {
-            loadRecipes();
         }
+
+        //We load our recipe from the DB
+        getLoaderManager().initLoader(RECIPE_DB, null, this);
     }
 
     @Override
@@ -103,6 +113,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //TODO //FIXME - Update the fav list inside RecipeActivity and send it back here (FavHelper from Movie app)
+    }
+
     /**
      * Initialize the recyclerview and his adapter
      */
@@ -119,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onItemClick(DrinkRecipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(KEY_INTENT_RECIPE, item);
+                    i.putExtra(KEY_INTENT_LIST_FAV_RECIPE, mFavoriteRecipeList);
                     i.putExtra(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
                     startActivity(i);
                 }
@@ -130,4 +147,61 @@ public class HomeActivity extends AppCompatActivity {
             mRecipeAdapter.notifyDataSetChanged();
         }
     }
+
+    /**
+     * Load the favorites movies from the DB
+     */
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String sortOrder = RecipeContract.RecipeEntry.COLUMN_NAME + " DESC";
+        String SELECTION = RecipeContract.RecipeEntry.COLUMN_FAVORITE + "=?";
+        String[] selectionArgs = new String[]{"1"};
+
+        return new CursorLoader(this,
+                RecipeContract.RecipeEntry.CONTENT_URI,
+                RecipeContract.RecipeEntry.getAllColumn(), // Projection
+                SELECTION, //selection
+                selectionArgs, //selection args
+                sortOrder);
+    }
+
+    /**
+     * When the movie are loaded, we put it on our list
+     */
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.getCount() > 0 && data.moveToFirst()) {
+            mFavoriteRecipeList = new ArrayList<>();
+            do {
+                final int id = data.getInt(data.getColumnIndex(RecipeContract.RecipeEntry._ID));
+                String title = data.getString(data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_NAME));
+                String image = data.getString(data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_IMAGE_URL));
+                String type = data.getString(data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_TYPE));
+                final boolean IS_FAVORITE = data.getInt(data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_FAVORITE)) == 1;
+                DrinkRecipe lRecipe = new DrinkRecipe();
+                lRecipe.setIdDrink(String.valueOf(id));
+                lRecipe.setStrDrink(title);
+                lRecipe.setStrDrinkThumb(image);
+                lRecipe.setFav(IS_FAVORITE);
+                lRecipe.setStrCategory(type);
+                mFavoriteRecipeList.add(lRecipe);
+            }
+            while (data.moveToNext());
+            data.close();
+        }
+
+        //If we got some favorite we display them, otherwise we load some random recipe
+        if (mFavoriteRecipeList != null && mFavoriteRecipeList.size() > 0){
+            mRecipeList = mFavoriteRecipeList;
+            initRecyclerView();
+        } else {
+            loadRecipes();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+
 }

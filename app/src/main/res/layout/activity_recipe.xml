@@ -3,17 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/recipeImageView"
+    <FrameLayout
+        android:id="@+id/layoutImages"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_picture_recipe"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/recipeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_picture_recipe"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" />
+
+        <ImageView
+            android:id="@+id/favoriteImageView"
+            android:layout_width="@dimen/fav_icon_size"
+            android:layout_height="@dimen/fav_icon_size"
+            android:scaleType="centerCrop"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/empty_star" />
+
+    </FrameLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragmentRecipe"
-        android:layout_below="@+id/recipeImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutImages" />
 
 </RelativeLayout>

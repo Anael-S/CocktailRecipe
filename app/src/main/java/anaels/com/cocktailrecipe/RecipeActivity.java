@@ -2,14 +2,17 @@ package anaels.com.cocktailrecipe;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,6 +23,8 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
+import anaels.com.cocktailrecipe.persistence.RecipeContract;
+import anaels.com.cocktailrecipe.persistence.RecipesDBHelper;
 import anaels.com.cocktailrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +37,7 @@ public class RecipeActivity extends AppCompatActivity {
     DrinkRecipe mRecipe;
     Context mContext;
     ArrayList<DrinkRecipe> mRecipeList;
+    private final String LOG_TAG = "RecipeDB";
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
@@ -42,10 +48,15 @@ public class RecipeActivity extends AppCompatActivity {
     FrameLayout fragmentStep;
     @BindView(R.id.recipeImageView)
     ImageView recipeImageView;
+    @BindView(R.id.favoriteImageView)
+    ImageView favoriteImageView;
+
 
     RecipeFragment fragmentRecipe;
     Parcelable positionIngredientList;
     Parcelable positionStepList;
+
+    private ArrayList<DrinkRecipe> listFavRecipe;
 
 
     @Override
@@ -62,6 +73,10 @@ public class RecipeActivity extends AppCompatActivity {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
             positionIngredientList = savedInstanceState.getParcelable(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
             positionStepList = savedInstanceState.getParcelable(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
+        }
+        listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
+        if (listFavRecipe == null) {
+            listFavRecipe = new ArrayList<>();
         }
 
         //We don't have to load it
@@ -83,7 +98,31 @@ public class RecipeActivity extends AppCompatActivity {
             });
         }
 
+        //favorite
+        if (listFavRecipe.contains(mRecipe)){
+            favoriteImageView.setImageResource(R.drawable.filled_star);
+        } else {
+            favoriteImageView.setImageResource(R.drawable.empty_star);
+        }
+        favoriteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if the movie is already in our favorite, we remove it
+                if (listFavRecipe.contains(mRecipe)) {
+                    listFavRecipe.remove(mRecipe);
+                    favoriteImageView.setImageResource(R.drawable.empty_star);
+                    RecipesDBHelper.removeFromFavorite(mRecipe, getContentResolver());
+                } else { //otherwise we just add it
+                    listFavRecipe.add(mRecipe);
+                    favoriteImageView.setImageResource(R.drawable.filled_star);
+                    RecipesDBHelper.addToFavorite(mRecipe, getContentResolver());
+                }
+            }
+        });
+
     }
+
+
 
     private void loadUI(Bundle savedInstanceState){
         //UI
