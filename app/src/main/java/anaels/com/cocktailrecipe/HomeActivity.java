@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
      * Load the recipes fron internet if we have an internet connection
      * Load them fron a local json file otherwise
      */
-    private void loadRecipes() {
+    private void loadRecipesFromAPI() {
         //If we have an internet connection
         if (InternetConnectionHelper.isNetworkAvailable(this)) {
             //We get our recipe from the network
@@ -97,10 +97,13 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                 @Override
                 public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
                     if (mRecipeList == null) mRecipeList = new ArrayList<DrinkRecipe>();
-                    mRecipeList.addAll(recipeList);
-                    //HOTFIX //TODO //FIXME //RM just to have some recipe to start
+                    //If we already got it in the list, we dont add it again
+                    if (!mRecipeList.contains(recipeList.get(0))) {
+                        mRecipeList.addAll(recipeList);
+                    }
+                    //We load 3 random recipe just to have some recipe to start
                     if (mRecipeList.size() < 3) {
-                        loadRecipes();
+                        loadRecipesFromAPI();
                     } else {
                         initRecyclerView();
                     }
@@ -204,12 +207,12 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             data.close();
         }
 
-        //If we got some favorite we display them, otherwise we load some random recipe
+        //If we got some favorite we display them, otherwise we load some random recipe from the API
         if (mFavoriteRecipeList != null && mFavoriteRecipeList.size() > 0){
             mRecipeList = mFavoriteRecipeList;
             initRecyclerView();
         } else {
-            loadRecipes();
+            loadRecipesFromAPI();
         }
     }
 
