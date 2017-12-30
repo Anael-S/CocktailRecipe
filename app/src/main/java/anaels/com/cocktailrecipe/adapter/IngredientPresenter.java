@@ -8,23 +8,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.otaliastudios.autocomplete.RecyclerViewPresenter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anaels.com.cocktailrecipe.R;
+import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 
 
 public class IngredientPresenter extends RecyclerViewPresenter<String> {
 
     protected Adapter adapter;
+    private Context context;
     private ArrayList<String> ingredientList;
 
     public IngredientPresenter(Context context, ArrayList<String> ingredientList) {
         super(context);
+        this.context=context;
         this.ingredientList = ingredientList;
     }
 
@@ -72,10 +77,12 @@ public class IngredientPresenter extends RecyclerViewPresenter<String> {
         public class Holder extends RecyclerView.ViewHolder {
             private View root;
             private TextView ingredientName;
+            private ImageView imageIngredient;
             public Holder(View itemView) {
                 super(itemView);
                 root = itemView;
-                ingredientName = ((TextView) itemView.findViewById(R.id.nameIngredientTextView));
+                imageIngredient = (ImageView) itemView.findViewById(R.id.imageIngredient);
+                ingredientName = (TextView) itemView.findViewById(R.id.nameIngredientTextView);
             }
         }
 
@@ -102,10 +109,13 @@ public class IngredientPresenter extends RecyclerViewPresenter<String> {
             if (isEmpty()) {
                 holder.ingredientName.setText("No result");
                 holder.root.setOnClickListener(null);
+                holder.imageIngredient.setVisibility(View.GONE);
                 return;
             }
             final String ingredient = data.get(position);
             holder.ingredientName.setText(ingredient);
+            holder.imageIngredient.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(RecipeApiHelper.getUrlImageByIngredient(ingredient)).into( holder.imageIngredient);
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

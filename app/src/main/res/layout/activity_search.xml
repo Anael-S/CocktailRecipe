@@ -7,8 +7,7 @@
     android:clipToPadding="false"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,8 +37,7 @@
         <com.ramotion.foldingcell.FoldingCell xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/folding_cell"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:id="@+id/cell_content_view"
@@ -70,13 +68,11 @@
                             android:layout_marginStart="@dimen/small_padding" />
                     </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/recyclerViewIngredientFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        />
+                        android:layout_marginBottom="10dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -161,13 +157,27 @@
             </FrameLayout>
         </com.ramotion.foldingcell.FoldingCell>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewRecipes"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:alpha="0.1"
+                android:src="@drawable/placeholder_cocktail" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewRecipes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+        </FrameLayout>
 
     </LinearLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSearch"
@@ -177,8 +187,8 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
         android:contentDescription="@string/action_search"
-        android:tint="@android:color/white"
         android:src="@drawable/ic_search"
+        android:tint="@android:color/white"
         app:fabSize="normal"
         app:pressedTranslationZ="@dimen/fab_press_translation_z" />
 </android.support.design.widget.CoordinatorLayout>

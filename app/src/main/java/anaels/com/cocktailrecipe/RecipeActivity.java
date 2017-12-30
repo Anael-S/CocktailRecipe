@@ -2,14 +2,12 @@ package anaels.com.cocktailrecipe;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +19,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import anaels.com.cocktailrecipe.api.CocktailApiHelper;
+import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.helper.FavoriteHelper;
-import anaels.com.cocktailrecipe.persistence.RecipeContract;
 import anaels.com.cocktailrecipe.persistence.RecipesDBHelper;
 import anaels.com.cocktailrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
@@ -85,13 +82,13 @@ public class RecipeActivity extends AppCompatActivity {
             loadUI(savedInstanceState);
         } else {
             //We load the recipe
-            CocktailApiHelper.searchCocktailById(this, mRecipe.getIdDrink(), new CocktailApiHelper.OnCocktailRecipeRecovered() {
+            RecipeApiHelper.searchCocktailById(this, mRecipe.getIdDrink(), new RecipeApiHelper.OnCocktailRecipeRecovered() {
                 @Override
                 public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> drinkRecipeList) {
                     mRecipe = drinkRecipeList.get(0);
                     loadUI(savedInstanceState);
                 }
-            }, new CocktailApiHelper.OnError() {
+            }, new RecipeApiHelper.OnError() {
                 @Override
                 public void onError() {
                     Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();

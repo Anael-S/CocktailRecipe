@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
-import anaels.com.cocktailrecipe.api.CocktailApiHelper;
+import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 import anaels.com.cocktailrecipe.helper.FavoriteHelper;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         //If we have an internet connection
         if (InternetConnectionHelper.isNetworkAvailable(this)) {
             //We get our recipe from the network
-            CocktailApiHelper.getRandomCocktail(this, new CocktailApiHelper.OnCocktailRecipeRecovered() {
+            RecipeApiHelper.getRandomCocktail(this, new RecipeApiHelper.OnCocktailRecipeRecovered() {
                 @Override
                 public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
                     if (mRecipeList == null) mRecipeList = new ArrayList<DrinkRecipe>();
@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                         initRecyclerView();
                     }
                 }
-            }, new CocktailApiHelper.OnError() {
+            }, new RecipeApiHelper.OnError() {
                 @Override
                 public void onError() {
                     Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();

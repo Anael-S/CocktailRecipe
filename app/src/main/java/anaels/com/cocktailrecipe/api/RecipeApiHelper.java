@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import anaels.com.cocktailrecipe.BuildConfig;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
@@ -20,7 +21,7 @@ import anaels.com.cocktailrecipe.helper.SerializeHelper;
 /**
  * Service used to get the json containing the recipes
  */
-public class CocktailApiHelper {
+public class RecipeApiHelper {
 
     private static final String BASE_URL_API = "http://www.thecocktaildb.com/api/json/v1/";
     private static final String API_TOKEN = BuildConfig.API_KEY + "/";
@@ -30,6 +31,8 @@ public class CocktailApiHelper {
     private static final String URL_SEARCH_BY_FILTER = "filter.php?";
     private static final String URL_DETAIL_COCKTAIL = "lookup.php?i=";
     private static final String URL_LIST_INGREDIENTS = "list.php?i=list";
+    private static final String URL_IMAGE_INGREDIENT = "http://www.thecocktaildb.com/images/ingredients/";
+    private static final String URL_IMAGE_INGREDIENT2 = "-Small.png";
     public static final String FILTER_ALCOHOLIC = "a=Alcoholic";
     public static final String FILTER_NON_ALCOHOLIC = "a=Non_Alcoholic";
     public static final String FILTER_ORDINARY_DRINK = "c=Ordinary_Drink";
@@ -48,38 +51,32 @@ public class CocktailApiHelper {
         void onError();
     }
 
-    public static void searchCocktailByFilters(Context context, ArrayList<String> ingredientsList, String filterAlcoholic, String filterTypeOfDrink, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
+    public static String getUrlImageByIngredient(String ingredient) {
+        return URL_IMAGE_INGREDIENT + ingredient + URL_IMAGE_INGREDIENT2;
+    }
+
+    public static void searchCocktailByFilters(Context context, String filterAlcoholic, String filterTypeOfDrink, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
         String filterUrl = URL_SEARCH_BY_FILTER;
         //Filter ingredient
-        boolean needsPrefix = true;
-        if (ingredientsList != null && !ingredientsList.isEmpty()) {
-            for (String lIngredient : ingredientsList) {
-                if (needsPrefix) {
-                    filterUrl += "i=" + lIngredient;
-                } else {
-                    filterUrl += "&i=" + lIngredient;
-                }
-                needsPrefix = false;
-            }
-        }
-        //If we don't need the prefix it means that we have some ingredient, so we need to add a '&'
-        if (!needsPrefix) {
-            filterUrl += "&";
-        }
+        boolean withoutFilter = true;
         //Filter alcoholic / non alcoholic
         if (filterAlcoholic != null && !filterAlcoholic.isEmpty()) {
             filterUrl += filterAlcoholic;
-        } else {
-            filterUrl += FILTER_ALCOHOLIC + "&" + FILTER_NON_ALCOHOLIC;
+            withoutFilter = false;
+            if (filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
+                filterUrl += "&";
+            }
         }
-        filterUrl += "&";
         //Filter type of drink
-        if (filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
+        if (withoutFilter && filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
             filterUrl += filterTypeOfDrink;
-        } else {
-            filterUrl += FILTER_ORDINARY_DRINK + "&" + FILTER_COCKTAIL;
+            withoutFilter = false;
+        }
+
+        if (withoutFilter) {
+            filterUrl += "i=";
         }
         StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + filterUrl, new com.android.volley.Response.Listener<String>() {
             @Override
@@ -102,29 +99,45 @@ public class CocktailApiHelper {
         queueVolley.add(requestRecipe);
     }
 
-    public static void searchCocktailByIngredients(Context context, ArrayList<String> ingredientsList, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
+    /**
+     * HOTFIX : The (free :))API is not really on point and we cannot called it with several argument (ingredient here)
+     * So we just call it one time for every ingredient and merge the lists
+     * @param context
+     * @param ingredientsList
+     * @param onCocktailRecipeRecovered
+     * @param onError
+     */
+    public static void searchCocktailByIngredients(final Context context, List<DrinkRecipe> recoveredRecipe, ArrayList<String> ingredientsList, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        String filterIngredients = URL_SEARCH_BY_INGREDIENT;
-        boolean firstTimeLoop = true;
-        for (String lIngredient : ingredientsList) {
-            if (firstTimeLoop) {
-                filterIngredients += lIngredient;
-            } else {
-                filterIngredients += "&i=" + lIngredient;
-            }
-            firstTimeLoop = false;
+        if (recoveredRecipe == null){
+            recoveredRecipe = new ArrayList<>();
         }
-        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_SEARCH_BY_NAME + filterIngredients, new com.android.volley.Response.Listener<String>() {
+        final List<DrinkRecipe> recoveredRecipeFromIngredient = recoveredRecipe;
+        String filterIngredients = URL_SEARCH_BY_INGREDIENT;
+        final ArrayList<String> updatedIngredientsList = new ArrayList<>(ingredientsList);
+        if (ingredientsList != null && !ingredientsList.isEmpty()) {
+            filterIngredients += ingredientsList.get(0);
+            updatedIngredientsList.remove(0);
+        }
+        StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + filterIngredients, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Type returnType = new TypeToken<ListDrink>() {
                 }.getType();
                 ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
                 if (drinkList != null && drinkList.getDrinkRecipes() != null && !drinkList.getDrinkRecipes().isEmpty()) {
-                    onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(drinkList.getDrinkRecipes()));
-                } else {
-                    onError.onError();
+                    //We merge our list
+                    for (DrinkRecipe lRecipe : drinkList.getDrinkRecipes()){
+                        if (!recoveredRecipeFromIngredient.contains(lRecipe)){
+                            recoveredRecipeFromIngredient.add(lRecipe);
+                        }
+                    }
+                    if (updatedIngredientsList.size() > 0){
+                        searchCocktailByIngredients(context, recoveredRecipeFromIngredient, updatedIngredientsList, onCocktailRecipeRecovered, onError);
+                    } else {
+                        onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(recoveredRecipeFromIngredient));
+                    }
                 }
             }
         }, new com.android.volley.Response.ErrorListener() {
