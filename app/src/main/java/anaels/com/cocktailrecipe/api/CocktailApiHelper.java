@@ -142,9 +142,15 @@ public class CocktailApiHelper {
         StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + URL_LIST_INGREDIENTS, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Type returnType = new TypeToken<ArrayList<String>>() {
+                Type returnType = new TypeToken<ListDrink>() {
                 }.getType();
-                ArrayList<String> ingredientList = SerializeHelper.deserializeJson(response, returnType);
+                ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
+                ArrayList<String> ingredientList = new ArrayList<>();
+                for (DrinkRecipe lRecipe : drinkList.getDrinkRecipes()) {
+                    if (lRecipe != null && !lRecipe.getStrIngredient1().isEmpty()) {
+                        ingredientList.add(lRecipe.getStrIngredient1());
+                    }
+                }
                 if (ingredientList != null && !ingredientList.isEmpty()) {
                     onIngredientListRecovered.onIngredientListRecovered(ingredientList);
                 } else {

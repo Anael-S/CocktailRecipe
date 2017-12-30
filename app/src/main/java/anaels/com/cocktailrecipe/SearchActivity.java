@@ -2,21 +2,32 @@ package anaels.com.cocktailrecipe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.text.Editable;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.otaliastudios.autocomplete.Autocomplete;
+import com.otaliastudios.autocomplete.AutocompleteCallback;
+import com.otaliastudios.autocomplete.AutocompletePresenter;
 import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.ArrayList;
 
+import anaels.com.cocktailrecipe.adapter.FilterAdapter;
+import anaels.com.cocktailrecipe.adapter.IngredientPresenter;
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
@@ -53,7 +64,12 @@ public class SearchActivity extends AppCompatActivity {
     CheckBox checkBoxOrdinaryDrink;
     @BindView(R.id.nameEditText)
     EditText nameEditText;
+    @BindView(R.id.recyclerViewIngredientFilter)
+    RecyclerView recyclerViewIngredientFilter;
 
+    private Autocomplete ingredientAutocomplete;
+    private FilterAdapter mFilterAdapter;
+    private ArrayList<String> listFilterIngredient = new ArrayList<>();
 
     boolean isSearchLayoutFolded;
 
@@ -95,6 +111,70 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
+
+        getIngredientList();
+    }
+
+    private void getIngredientList() {
+        CocktailApiHelper.getIngredientList(this, new CocktailApiHelper.OnIngredientListRecovered() {
+            @Override
+            public void onIngredientListRecovered(ArrayList<String> ingredientList) {
+                setupIngredientAutocomplete(ingredientList);
+            }
+        }, new CocktailApiHelper.OnError() {
+            @Override
+            public void onError() {
+            }
+        });
+    }
+
+    private void setupIngredientAutocomplete(ArrayList<String> ingredientList) {
+        EditText edit = (EditText) findViewById(R.id.editTextIngredient);
+        float elevation = 6f;
+        Drawable backgroundDrawable = new ColorDrawable(Color.WHITE);
+        AutocompletePresenter<String> presenter = new IngredientPresenter(mContext, ingredientList);
+        AutocompleteCallback<String> callback = new AutocompleteCallback<String>() {
+            @Override
+            public boolean onPopupItemClicked(Editable editable, String item) {
+                editable.clear();
+                if (!listFilterIngredient.contains(item)) {
+                    listFilterIngredient.add(item);
+                    initRecyclerViewFilter();
+                }
+                return true;
+            }
+
+            public void onPopupVisibilityChanged(boolean shown) {
+            }
+        };
+
+        ingredientAutocomplete = Autocomplete.<String>on(edit)
+                .with(elevation)
+                .with(backgroundDrawable)
+                .with(presenter)
+                .with(callback)
+                .build();
+    }
+
+    private void initRecyclerViewFilter(){
+        if (mFilterAdapter == null){
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            recyclerViewIngredientFilter.setLayoutManager(layoutManager);
+            mFilterAdapter = new FilterAdapter(this, listFilterIngredient, new FilterAdapter.OnClickFilter() {
+                @Override
+                public void onClickFilter(ArrayList<String> updatedFilterList) {
+                    listFilterIngredient = updatedFilterList;
+                    initRecyclerViewFilter();
+                }
+            });
+            recyclerViewIngredientFilter.setAdapter(mFilterAdapter);
+        } else {
+            //We update the adapter
+            mFilterAdapter.setListFilter(listFilterIngredient);
+            mFilterAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override

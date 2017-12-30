@@ -47,5 +47,6 @@ dependencies {
     compile 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.google.android.exoplayer:exoplayer:r2.4.4'
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'
+    compile 'com.otaliastudios:autocomplete:1.0.1'
     testCompile 'junit:junit:4.12'
 }

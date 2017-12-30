@@ -63,12 +63,20 @@
                             android:layout_height="wrap_content"
                             android:text="@string/cocktail_ingredient" />
 
-                        <AutoCompleteTextView
+                        <EditText
+                            android:id="@+id/editTextIngredient"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/small_padding"
-                            android:text="Ingredient" />
+                            android:layout_marginStart="@dimen/small_padding" />
                     </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/recyclerViewIngredientFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -169,6 +177,7 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
         android:contentDescription="@string/action_search"
+        android:tint="@android:color/white"
         android:src="@drawable/ic_search"
         app:fabSize="normal"
         app:pressedTranslationZ="@dimen/fab_press_translation_z" />
