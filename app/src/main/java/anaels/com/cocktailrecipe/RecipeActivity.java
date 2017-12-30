@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
+import anaels.com.cocktailrecipe.helper.FavoriteHelper;
 import anaels.com.cocktailrecipe.persistence.RecipeContract;
 import anaels.com.cocktailrecipe.persistence.RecipesDBHelper;
 import anaels.com.cocktailrecipe.widget.RecipeWidgetProvider;
@@ -119,10 +120,13 @@ public class RecipeActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
-
+    @Override
+    protected void onPause() {
+        FavoriteHelper.setFavorite(this,listFavRecipe);
+        super.onPause();
+    }
 
     private void loadUI(Bundle savedInstanceState){
         //UI

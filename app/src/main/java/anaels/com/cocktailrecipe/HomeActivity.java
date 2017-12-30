@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.CocktailApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
+import anaels.com.cocktailrecipe.helper.FavoriteHelper;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
 import anaels.com.cocktailrecipe.persistence.RecipeContract;
 import butterknife.BindView;
@@ -39,8 +40,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String KEY_INTENT_LIST_RECIPE = "keyIntentRecipeList";
     public static final String KEY_INTENT_LIST_FAV_RECIPE = "keyIntentFavorite";
 
-    private static final int RECIPE_DB = 0 ;
+    private static final int RECIPE_DB = 0;
 
+    private boolean loadFavFromDB = true;
 
     @BindView(R.id.recyclerViewRecipes)
     RecyclerView recyclerViewRecipes;
@@ -62,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, SearchActivity.class);
+                i.putExtra(KEY_INTENT_LIST_FAV_RECIPE, mFavoriteRecipeList);
                 startActivity(i);
             }
         });
@@ -73,8 +76,6 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             initRecyclerView();
         }
 
-        //We load our recipe from the DB
-        getLoaderManager().initLoader(RECIPE_DB, null, this);
     }
 
     @Override
@@ -116,7 +117,20 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO //FIXME - Update the fav list inside RecipeActivity and send it back here (FavHelper from Movie app)
+        if (loadFavFromDB) {
+            //We load our recipe from the DB
+            getLoaderManager().initLoader(RECIPE_DB, null, this);
+            loadFavFromDB = false;
+        } else {
+            //We get our updated fav list without accessing the DB again
+            if (FavoriteHelper.getFavorite(this) != null && !FavoriteHelper.getFavorite(this).isEmpty()) {
+                mRecipeList = FavoriteHelper.getFavorite(this);
+                initRecyclerView();
+            } else { //If its empty, we check in our DB, if still empty then we reset some random recipe with our loader
+                getLoaderManager().initLoader(RECIPE_DB, null, this);
+                loadFavFromDB = false;
+            }
+        }
     }
 
     /**

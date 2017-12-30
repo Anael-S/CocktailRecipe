@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 public class SearchActivity extends AppCompatActivity {
 
     ArrayList<DrinkRecipe> mRecipeList;
+    ArrayList<DrinkRecipe> listFavRecipe;
     RecipeAdapter mRecipeAdapter;
     Context mContext;
 
@@ -92,6 +93,8 @@ public class SearchActivity extends AppCompatActivity {
             mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
             initRecyclerView();
         }
+
+        listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
     }
 
     @Override
@@ -182,6 +185,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void onItemClick(DrinkRecipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(HomeActivity.KEY_INTENT_RECIPE, item);
+                    i.putExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE, listFavRecipe);
                     startActivity(i);
                 }
             });
