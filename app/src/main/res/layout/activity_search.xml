@@ -196,7 +196,6 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:contentDescription="@string/action_search"
         android:src="@drawable/ic_search"
-        android:tint="@android:color/white"
         app:fabSize="normal"
         app:pressedTranslationZ="@dimen/fab_press_translation_z" />
 </android.support.design.widget.CoordinatorLayout>

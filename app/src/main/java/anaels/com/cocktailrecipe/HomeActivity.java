@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -63,9 +65,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, SearchActivity.class);
-                i.putExtra(KEY_INTENT_LIST_FAV_RECIPE, mFavoriteRecipeList);
-                startActivity(i);
+                launchSearchActivity();
             }
         });
 
@@ -134,6 +134,27 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                 loadFavFromDB = false;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         if (item.getItemId() == R.id.action_search) {
+             launchSearchActivity();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void launchSearchActivity(){
+        Intent i = new Intent(mContext, SearchActivity.class);
+        i.putExtra(KEY_INTENT_LIST_FAV_RECIPE, mFavoriteRecipeList);
+        startActivity(i);
     }
 
     /**
