@@ -1,8 +1,8 @@
 <resources>
-    <color name="photo_placeholder">#ccc</color>
-    <color name="colorPrimary">#9C27B0</color>
-    <color name="colorPrimaryDark">#7B1FA2</color>
-    <color name="colorPrimaryLight">#D1C4E9</color>
-    <color name="colorAccent">#d32f2f</color>
+    <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryDark">#EF6C00</color>
+    <color name="colorPrimaryLight">#FFB74D</color>
+    <color name="colorAccent">#D50000</color>
     <color name="black">#000000</color>
+    <color name="transparentBlack">#80000000</color>
 </resources>
