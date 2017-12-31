@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -35,7 +36,6 @@ public class RecipeActivity extends AppCompatActivity {
     DrinkRecipe mRecipe;
     Context mContext;
     ArrayList<DrinkRecipe> mRecipeList;
-    private final String LOG_TAG = "RecipeDB";
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
@@ -48,7 +48,8 @@ public class RecipeActivity extends AppCompatActivity {
     ImageView recipeImageView;
     @BindView(R.id.favoriteImageView)
     ImageView favoriteImageView;
-
+    @BindView(R.id.titleRecipeTextView)
+    TextView titleRecipeTextView;
 
     RecipeFragment fragmentRecipe;
     Parcelable positionIngredientList;
@@ -97,10 +98,10 @@ public class RecipeActivity extends AppCompatActivity {
         }
 
         //favorite
-        if (listFavRecipe.contains(mRecipe)){
-            favoriteImageView.setImageResource(R.drawable.filled_star);
+        if (listFavRecipe.contains(mRecipe)) {
+            favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
         } else {
-            favoriteImageView.setImageResource(R.drawable.empty_star);
+            favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
         }
         favoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,11 +109,11 @@ public class RecipeActivity extends AppCompatActivity {
                 //if the movie is already in our favorite, we remove it
                 if (listFavRecipe.contains(mRecipe)) {
                     listFavRecipe.remove(mRecipe);
-                    favoriteImageView.setImageResource(R.drawable.empty_star);
+                    favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
                     RecipesDBHelper.removeFromFavorite(mRecipe, getContentResolver());
                 } else { //otherwise we just add it
                     listFavRecipe.add(mRecipe);
-                    favoriteImageView.setImageResource(R.drawable.filled_star);
+                    favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
                     RecipesDBHelper.addToFavorite(mRecipe, getContentResolver());
                 }
             }
@@ -121,13 +122,14 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        FavoriteHelper.setFavorite(this,listFavRecipe);
+        FavoriteHelper.setFavorite(this, listFavRecipe);
         super.onPause();
     }
 
-    private void loadUI(Bundle savedInstanceState){
+    private void loadUI(Bundle savedInstanceState) {
         //UI
         if (mRecipe != null) {
+            titleRecipeTextView.setText(mRecipe.getStrDrink());
             Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).error(R.drawable.placeholder).placeholder(R.drawable.placeholder).into(recipeImageView);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);

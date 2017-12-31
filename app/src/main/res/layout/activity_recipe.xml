@@ -3,32 +3,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/layoutImages"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/recipeImageView"
+        <RelativeLayout
+            android:id="@+id/layoutImages"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_picture_recipe"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/favoriteImageView"
-            android:layout_width="@dimen/fav_icon_size"
-            android:layout_height="@dimen/fav_icon_size"
-            android:scaleType="centerCrop"
-            android:layout_gravity="bottom|end"
-            android:src="@drawable/empty_star" />
+            <ImageView
+                android:id="@+id/recipeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
 
-    </FrameLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:layout_alignBottom="@+id/recipeImageView">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragmentRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layoutImages" />
+                <TextView
+                    android:id="@+id/titleRecipeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/small_padding"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:text="Awesome Recipe"
+                    android:textColor="#ffffff"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_size_recipe_title"
+                    android:layout_toLeftOf="@+id/favoriteImageView"
+                    android:textStyle="italic" />
+
+                <ImageView
+                    android:id="@+id/favoriteImageView"
+                    android:layout_width="@dimen/fav_icon_size"
+                    android:layout_height="@dimen/fav_icon_size"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_empty_heart" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragmentRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/layoutImages" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

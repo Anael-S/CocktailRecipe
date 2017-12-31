@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 
@@ -41,7 +42,6 @@ public class RecipeFragment extends Fragment {
     RecyclerView recyclerViewIngredientsRecipes;
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
-
 
     IngredientAdapter mIngredientAdapter;
     StepAdapter mStepAdapter;
@@ -95,6 +95,21 @@ public class RecipeFragment extends Fragment {
      * Initialize the recyclerview for the ingredients and his adapter
      */
     private void initRecyclerViewIngredient() {
+        //Handle the maximum height of the recyclerview
+        //If we got less than 4 ingredient, than we wrap content
+        //Otherwise we set a limited height to be able to display the instructions step also
+        if (mRecipe.getIngredients().size() <= 3) {
+            ViewGroup.LayoutParams params = recyclerViewIngredientsRecipes.getLayoutParams();
+            params.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+            recyclerViewIngredientsRecipes.setLayoutParams(params);
+        } else {
+            float height = getResources().getDimension(R.dimen.view_ingredient_height);
+            ViewGroup.LayoutParams params_new = recyclerViewIngredientsRecipes.getLayoutParams();
+            params_new.height = Math.round(height);
+            recyclerViewIngredientsRecipes.setLayoutParams(params_new);
+        }
+
+
         recyclerViewIngredientsRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (mIngredientAdapter == null) {
             mIngredientAdapter = new IngredientAdapter(getActivity(), mRecipe.getIngredients(), mRecipe.getMeasures());

@@ -36,8 +36,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
-        viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i)));
-        viewHolder.quantityIngredientTextView.setText(listQuantity.get(i));
+        if (i < listIngredient.size()) {
+            viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i)));
+        }
+        if (i < listQuantity.size()) {
+            viewHolder.quantityIngredientTextView.setText(listQuantity.get(i));
+        }
         //Lower bar
         if (i == listIngredient.size()-1){
             viewHolder.separatorView.setVisibility(View.GONE);
