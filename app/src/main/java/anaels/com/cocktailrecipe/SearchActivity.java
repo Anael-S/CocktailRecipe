@@ -104,6 +104,11 @@ public class SearchActivity extends AppCompatActivity {
                 hideSoftKeyboard();
                 //Search
                 loadRecipes();
+                //We fold the search panel if necessary
+                if (!isSearchLayoutFolded) {
+                    foldingCell.toggle(!isSearchLayoutFolded);
+                    isSearchLayoutFolded = !isSearchLayoutFolded;
+                }
             }
         });
 
