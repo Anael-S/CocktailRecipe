@@ -7,6 +7,9 @@
 
     <string name="ingredient_name">%1$s:</string>
 
+    <string name="removed_from_fav">Removed from favorite</string>
+    <string name="added_from_fav">Added to favorite</string>
+
     <string name="step_number">Step %1$s:</string>
     <string name="next_step">Next</string>
     <string name="previous_step">Previous</string>

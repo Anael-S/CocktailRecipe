@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -106,15 +110,21 @@ public class RecipeActivity extends AppCompatActivity {
         favoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Animate the imageView
+                final Animation bounceAnimation = AnimationUtils.loadAnimation(mContext, R.anim.bounce);
+                bounceAnimation.setInterpolator(new BounceInterpolator());
+                favoriteImageView.startAnimation(bounceAnimation);
                 //if the movie is already in our favorite, we remove it
                 if (listFavRecipe.contains(mRecipe)) {
                     listFavRecipe.remove(mRecipe);
                     favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
                     RecipesDBHelper.removeFromFavorite(mRecipe, getContentResolver());
+                    Snackbar.make(favoriteImageView, R.string.removed_from_fav, Snackbar.LENGTH_LONG).show();
                 } else { //otherwise we just add it
                     listFavRecipe.add(mRecipe);
                     favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
                     RecipesDBHelper.addToFavorite(mRecipe, getContentResolver());
+                    Snackbar.make(favoriteImageView, R.string.added_from_fav, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
