@@ -102,6 +102,7 @@ public class RecipeApiHelper {
     /**
      * HOTFIX : The (free :))API is not really on point and we cannot called it with several argument (ingredient here)
      * So we just call it one time for every ingredient and merge the lists
+     *
      * @param context
      * @param ingredientsList
      * @param onCocktailRecipeRecovered
@@ -110,7 +111,7 @@ public class RecipeApiHelper {
     public static void searchCocktailByIngredients(final Context context, List<DrinkRecipe> recoveredRecipe, ArrayList<String> ingredientsList, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
-        if (recoveredRecipe == null){
+        if (recoveredRecipe == null) {
             recoveredRecipe = new ArrayList<>();
         }
         final List<DrinkRecipe> recoveredRecipeFromIngredient = recoveredRecipe;
@@ -126,17 +127,23 @@ public class RecipeApiHelper {
                 Type returnType = new TypeToken<ListDrink>() {
                 }.getType();
                 ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
+                List<DrinkRecipe> recoveredRecipeTemp = new ArrayList<>();
                 if (drinkList != null && drinkList.getDrinkRecipes() != null && !drinkList.getDrinkRecipes().isEmpty()) {
-                    //We merge our list
-                    for (DrinkRecipe lRecipe : drinkList.getDrinkRecipes()){
-                        if (!recoveredRecipeFromIngredient.contains(lRecipe)){
-                            recoveredRecipeFromIngredient.add(lRecipe);
+                    if (recoveredRecipeFromIngredient.isEmpty()) {
+                        recoveredRecipeTemp = drinkList.getDrinkRecipes();
+                    } else {
+                        //We merge our list
+                        for (DrinkRecipe lRecipe : drinkList.getDrinkRecipes()) {
+                            //It is inside the two list, so we need to add it
+                            if (recoveredRecipeFromIngredient.contains(lRecipe)) {
+                                recoveredRecipeTemp.add(lRecipe);
+                            }
                         }
                     }
-                    if (updatedIngredientsList.size() > 0){
-                        searchCocktailByIngredients(context, recoveredRecipeFromIngredient, updatedIngredientsList, onCocktailRecipeRecovered, onError);
+                    if (updatedIngredientsList.size() > 0) {
+                        searchCocktailByIngredients(context, recoveredRecipeTemp, updatedIngredientsList, onCocktailRecipeRecovered, onError);
                     } else {
-                        onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(recoveredRecipeFromIngredient));
+                        onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(recoveredRecipeTemp));
                     }
                 }
             }

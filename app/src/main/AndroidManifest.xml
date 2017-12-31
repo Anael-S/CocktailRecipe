@@ -28,6 +28,7 @@
         </activity>
         <activity
             android:name=".SearchActivity"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme"
             android:parentActivityName=".HomeActivity">
         </activity>
