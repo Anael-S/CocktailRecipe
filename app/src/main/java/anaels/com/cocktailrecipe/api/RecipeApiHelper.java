@@ -195,8 +195,12 @@ public class RecipeApiHelper {
                 Type returnType = new TypeToken<ListDrink>() {
                 }.getType();
                 ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
-                if (drinkList != null && drinkList.getDrinkRecipes() != null && !drinkList.getDrinkRecipes().isEmpty()) {
-                    onCocktailRecipeRecovered.onCocktailRecipeRecovered(new ArrayList<>(drinkList.getDrinkRecipes()));
+                if (drinkList != null) {
+                    ArrayList<DrinkRecipe> recipelist = new ArrayList<>();
+                    if (drinkList.getDrinkRecipes() != null) {
+                        recipelist = new ArrayList<>(drinkList.getDrinkRecipes());
+                    }
+                    onCocktailRecipeRecovered.onCocktailRecipeRecovered(recipelist);
                 } else {
                     onError.onError();
                 }

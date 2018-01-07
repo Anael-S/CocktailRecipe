@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -66,7 +67,9 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.checkBoxOrdinaryDrink)
     CheckBox checkBoxOrdinaryDrink;
     @BindView(R.id.nameEditText)
-    EditText nameEditText; //FIXME //TODO : onEnterPressed on this field + ingredient
+    EditText nameEditText;
+    @BindView(R.id.editTextIngredient)
+    EditText editTextIngredient;
     @BindView(R.id.recyclerViewIngredientFilter)
     RecyclerView recyclerViewIngredientFilter;
 
@@ -90,6 +93,21 @@ public class SearchActivity extends AppCompatActivity {
         isSearchLayoutFolded = true;
         isAnimatonRunning=false;
 
+        initListeners();
+
+        //If we already got our recipe lists, we recover them
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
+            initRecyclerView();
+        }
+
+        listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
+
+        getIngredientList();
+    }
+
+    private void initListeners(){
         //OnClick listeners
         foldingCell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,21 +150,25 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        //If we already got our recipe lists, we recover them
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
-            initRecyclerView();
-        }
+        nameEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    loadRecipes();
+                    hideSoftKeyboard();
+                    return true;
+                }
+                return false;
+            }
+        });
 
-        listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
-
-        getIngredientList();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        editTextIngredient.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -173,7 +195,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setupIngredientAutocomplete(ArrayList<String> ingredientList) {
-        EditText edit = (EditText) findViewById(R.id.editTextIngredient);
         float elevation = 6f;
         Drawable backgroundDrawable = new ColorDrawable(Color.WHITE);
         AutocompletePresenter<String> presenter = new IngredientPresenter(mContext, ingredientList);
@@ -192,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
 
-        ingredientAutocomplete = Autocomplete.<String>on(edit)
+        ingredientAutocomplete = Autocomplete.<String>on(editTextIngredient)
                 .with(elevation)
                 .with(backgroundDrawable)
                 .with(presenter)
