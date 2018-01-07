@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "980201246019",
+    "firebase_url": "https://ez-cocktails.firebaseio.com",
+    "project_id": "ez-cocktails",
+    "storage_bucket": "ez-cocktails.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980201246019:android:82b3fed5cd9a9db9",
+        "android_client_info": {
+          "package_name": "anaels.com.cocktailrecipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980201246019-08du2s0v8gikggv7bfs49dpv6rtohvo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_oF3AoYV9AQl3qv8znphl7qqP7EefnJY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
