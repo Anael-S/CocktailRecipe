@@ -7,12 +7,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -72,6 +75,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> listFilterIngredient;
 
     boolean isSearchLayoutFolded;
+    boolean isAnimatonRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +88,33 @@ public class SearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         isSearchLayoutFolded = true;
+        isAnimatonRunning=false;
 
         //OnClick listeners
         foldingCell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isSearchLayoutFolded) {
-                    //We empty the name search
-                    nameEditText.setText("");
+                if (!isAnimatonRunning) {
+                    //We disable the click during the animation
+                    final int animationTime = 1000;
+                    isAnimatonRunning = true;
+
+                    if (isSearchLayoutFolded) {
+                        //We empty the name search
+                        nameEditText.setText("");
+                    }
+                    foldingCell.toggle(!isSearchLayoutFolded);
+                    isSearchLayoutFolded = !isSearchLayoutFolded;
+
+                    //We enable the click after the animation
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    final Runnable r = new Runnable() {
+                        public void run() {
+                            isAnimatonRunning = false;
+                        }
+                    };
+                    handler.postDelayed(r, animationTime);
                 }
-                foldingCell.toggle(!isSearchLayoutFolded);
-                isSearchLayoutFolded = !isSearchLayoutFolded;
             }
         });
         fabSearch.setOnClickListener(new View.OnClickListener() {
