@@ -183,7 +183,7 @@ public class RecipeActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.addToWidgetButton) {
             //We send the recipe to the widget
-            Toast.makeText(mContext, R.string.added_to_widget, Toast.LENGTH_SHORT).show();
+            Snackbar.make(titleRecipeTextView, R.string.added_to_widget, Snackbar.LENGTH_LONG).show();
             Intent intent = new Intent(mContext, RecipeWidgetProvider.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intent.putExtra(HomeActivity.KEY_INTENT_RECIPE, mRecipe);

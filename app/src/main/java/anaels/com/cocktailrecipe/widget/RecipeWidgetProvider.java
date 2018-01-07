@@ -37,22 +37,21 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             views.setViewVisibility(R.id.addToWidgetIcon, View.VISIBLE);
             views.setViewVisibility(R.id.layoutIngredient, View.GONE);
         } else {
-            //TODO : update this piece of code
-//            //name
-//            views.setTextViewText(R.id.titleRecipeTextView, mRecipe.getName());
-//
-//            //Visibility
-//            views.setViewVisibility(R.id.addToWidgetIcon, View.GONE);
-//            views.setViewVisibility(R.id.layoutIngredient, View.VISIBLE);
-//
-//            //ListView ingredients
-//            views.removeAllViews(R.id.listViewIngredientsRecipes);
-//            for (Ingredient ingredient : mRecipe.getIngredients()) {
-//                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(), R.layout.row_ingredient_widget);
-//                rvIngredient.setTextViewText(R.id.tv_recipe_widget_ingredient_item, StepHelper.formatQuantityForDisplay(ingredient.getQuantity()) +
-//                        String.valueOf(ingredient.getMeasure().toLowerCase()) + " " + ingredient.getIngredient());
-//                views.addView(R.id.listViewIngredientsRecipes, rvIngredient);
-//            }
+            //TODO : update this piece of code with a proper listview
+            //name
+            views.setTextViewText(R.id.titleRecipeTextView, mRecipe.getStrDrink());
+
+            //Visibility
+            views.setViewVisibility(R.id.addToWidgetIcon, View.GONE);
+            views.setViewVisibility(R.id.layoutIngredient, View.VISIBLE);
+
+            //ListView ingredients
+            views.removeAllViews(R.id.listViewIngredientsRecipes);
+            for (String ingredient : mRecipe.getIngredients()) {
+                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(), R.layout.row_ingredient_widget);
+                rvIngredient.setTextViewText(R.id.tv_recipe_widget_ingredient_item, ingredient);
+                views.addView(R.id.listViewIngredientsRecipes, rvIngredient);
+            }
 
             //OnClick
             Intent intentRecipe = new Intent(context, RecipeActivity.class);
