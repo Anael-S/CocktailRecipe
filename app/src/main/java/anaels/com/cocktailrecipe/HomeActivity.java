@@ -17,6 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
@@ -75,6 +79,14 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
             initRecyclerView();
         }
+
+        //Ad
+        MobileAds.initialize(this, getString(R.string.app_id_admob));
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice("51CE1F2EACEE1C8EB4FBA9B4F0F2098F") //Phone
+                .build();
+        mAdView.loadAd(adRequest);
 
     }
 

@@ -38,4 +38,7 @@
 
     <string name="choose_recipe">Please select a recipe and click on the button</string>
     <string name="added_to_widget">Added to widget</string>
+
+    <string name="app_id_admob">ca-app-pub-8725338676350366~8892888137</string>
+    <string name="id_pub_banner">ca-app-pub-8725338676350366/9956765788</string>
 </resources>
