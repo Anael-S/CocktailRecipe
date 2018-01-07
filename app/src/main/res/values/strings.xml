@@ -41,4 +41,6 @@
 
     <string name="app_id_admob">ca-app-pub-8725338676350366~8892888137</string>
     <string name="id_pub_banner">ca-app-pub-8725338676350366/9956765788</string>
+
+    <string name="google_app_id">1:980201246019:android:82b3fed5cd9a9db9</string>
 </resources>

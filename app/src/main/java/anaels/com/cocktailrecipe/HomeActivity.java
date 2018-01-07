@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.fabSearch)
     FloatingActionButton fabSearch;
 
+    //Analytics
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,15 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                 .build();
         mAdView.loadAd(adRequest);
 
+        //Firebase
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, new Bundle());
     }
 
     @Override

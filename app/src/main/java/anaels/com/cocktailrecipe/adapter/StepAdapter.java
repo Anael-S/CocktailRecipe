@@ -34,7 +34,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
-        viewHolder.stepNumberTextView.setText(mActivity.getString(R.string.step_number, i + 1));
         viewHolder.stepShortDescriptionTextView.setText(listStep.get(i));
     }
 
@@ -44,7 +43,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView stepNumberTextView;
         TextView stepShortDescriptionTextView;
         View mView;
         CardView cardViewIngredientsRecipes;
@@ -52,7 +50,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
             mView = itemView;
-            stepNumberTextView = (TextView) view.findViewById(R.id.stepNumberTextView);
             stepShortDescriptionTextView = (TextView) view.findViewById(R.id.stepShortDescriptionTextView);
             cardViewIngredientsRecipes = (CardView) view.findViewById(R.id.cardViewIngredientsRecipes);
         }
