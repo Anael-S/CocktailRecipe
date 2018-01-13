@@ -45,9 +45,6 @@ public class RecipeActivity extends AppCompatActivity {
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
     public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
 
-    @Nullable
-    @BindView(R.id.fragmentStep)
-    FrameLayout fragmentStep;
     @BindView(R.id.recipeImageView)
     ImageView recipeImageView;
     @BindView(R.id.favoriteImageView)
@@ -158,17 +155,6 @@ public class RecipeActivity extends AppCompatActivity {
             fragmentRecipe.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
-        }
-
-        //If we're on a tablet && its not a screen rotation
-        if (fragmentStep != null && savedInstanceState == null) {
-            StepFragment fragmentStep = new StepFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));
-            bundle.putStringArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<>(mRecipe.getSteps()));
-            fragmentStep.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentStep, fragmentStep).commit();
         }
     }
 

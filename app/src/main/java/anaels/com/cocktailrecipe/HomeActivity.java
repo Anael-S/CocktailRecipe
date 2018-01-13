@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -41,6 +42,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     ArrayList<DrinkRecipe> mRecipeList;
     ArrayList<DrinkRecipe> mFavoriteRecipeList;
     RecipeAdapter mRecipeAdapter;
+    LinearLayoutManager layoutManagerRecyclerView;
     Context mContext;
 
     public static final String KEY_INTENT_RECIPE = "keyIntentRecipe";
@@ -69,6 +71,14 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
         mContext = this;
 
+        //Orientation
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManagerRecyclerView = new LinearLayoutManager(this);
+        } else {
+            layoutManagerRecyclerView = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        }
+
         //Button onClick
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +91,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
-            initRecyclerView();
+            initRecyclerView(false);
         }
 
         //Ad
@@ -94,7 +104,6 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
     }
 
     @Override
@@ -109,6 +118,18 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManagerRecyclerView = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManagerRecyclerView = new LinearLayoutManager(this);
+        }
+        initRecyclerView(true);
+    }
 
     /**
      * Load the recipes fron internet if we have an internet connection
@@ -130,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                     if (mRecipeList.size() < 3) {
                         loadRecipesFromAPI();
                     } else {
-                        initRecyclerView();
+                        initRecyclerView(false);
                     }
                 }
             }, new RecipeApiHelper.OnError() {
@@ -154,7 +175,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             if (FavoriteHelper.getFavorite(this) != null && !FavoriteHelper.getFavorite(this).isEmpty()) {
                 mRecipeList = FavoriteHelper.getFavorite(this);
                 mFavoriteRecipeList = mRecipeList;
-                initRecyclerView();
+                initRecyclerView(false);
             } else { //If its empty, we check in our DB, if still empty then we reset some random recipe with our loader
                 getLoaderManager().initLoader(RECIPE_DB, null, this);
                 loadFavFromDB = false;
@@ -170,14 +191,14 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         if (item.getItemId() == R.id.action_search) {
-             launchSearchActivity();
+        if (item.getItemId() == R.id.action_search) {
+            launchSearchActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void launchSearchActivity(){
+    private void launchSearchActivity() {
         Intent i = new Intent(mContext, SearchActivity.class);
         i.putExtra(KEY_INTENT_LIST_FAV_RECIPE, mFavoriteRecipeList);
         startActivity(i);
@@ -186,14 +207,10 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * Initialize the recyclerview and his adapter
      */
-    private void initRecyclerView() {
+    private void initRecyclerView(boolean hardReset) {
         recyclerViewRecipes.setHasFixedSize(true);
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.number_column)));
-        } else {
-            recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
-        }
-        if (mRecipeAdapter == null) {
+        recyclerViewRecipes.setLayoutManager(layoutManagerRecyclerView);
+        if (mRecipeAdapter == null || hardReset) {
             mRecipeAdapter = new RecipeAdapter(this, true, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DrinkRecipe item) {
@@ -234,7 +251,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.getCount() > 0 && data.moveToFirst()) {
+        if (data != null && !data.isClosed() && data.getCount() > 0 && data.moveToFirst()) {
             mFavoriteRecipeList = new ArrayList<>();
             do {
                 final int id = data.getInt(data.getColumnIndex(RecipeContract.RecipeEntry._ID));
@@ -255,9 +272,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         //If we got some favorite we display them, otherwise we load some random recipe from the API
-        if (mFavoriteRecipeList != null && mFavoriteRecipeList.size() > 0){
+        if (mFavoriteRecipeList != null && mFavoriteRecipeList.size() > 0) {
             mRecipeList = mFavoriteRecipeList;
-            initRecyclerView();
+            initRecyclerView(false);
         } else {
             loadRecipesFromAPI();
         }
