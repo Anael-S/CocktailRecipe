@@ -1,6 +1,7 @@
 package anaels.com.cocktailrecipe;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,10 @@ public class RecipeFragment extends Fragment {
     RecyclerView recyclerViewIngredientsRecipes;
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
+    @BindView(R.id.textViewInstructions)
+    TextView textViewInstructions;
+    @BindView(R.id.textViewIngredients)
+    TextView textViewIngredients;
 
     IngredientAdapter mIngredientAdapter;
     StepAdapter mStepAdapter;
@@ -121,6 +127,11 @@ public class RecipeFragment extends Fragment {
                 positionIngredientList = myLayoutManager.onSaveInstanceState();
             }
         });
+
+        AnimationDrawable animationDrawable = (AnimationDrawable) textViewInstructions.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
     }
 
     /**
@@ -144,5 +155,10 @@ public class RecipeFragment extends Fragment {
                 positionStepList = myLayoutManager.onSaveInstanceState();
             }
         });
+
+        AnimationDrawable animationDrawable = (AnimationDrawable) textViewIngredients.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
     }
 }

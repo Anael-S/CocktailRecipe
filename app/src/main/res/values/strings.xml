@@ -14,8 +14,8 @@
     <string name="next_step">Next</string>
     <string name="previous_step">Previous</string>
 
-    <string name="instructions">Instructions:</string>
-    <string name="ingredients">Ingredients:</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
 
     <string name="retry">retry</string>
     <string name="no_internet">No internet connection</string>

@@ -36,15 +36,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:background="@color/transparentBlack"
-                    android:gravity="start"
+                    android:background="@drawable/gradient_bg_list"
+                    android:gravity="center"
                     android:paddingBottom="@dimen/extra_extra_small_padding"
                     android:paddingEnd="@dimen/small_padding"
                     android:paddingStart="@dimen/small_padding"
                     android:paddingTop="@dimen/extra_extra_small_padding"
                     android:text="@string/ingredients"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
+                    android:textStyle="italic" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewIngredientsRecipes"
@@ -75,14 +74,12 @@
 
                 <TextView
                     android:id="@+id/textViewInstructions"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/transparentBlack"
+                    android:background="@drawable/gradient_bg_list"
                     android:gravity="center"
                     android:text="@string/instructions"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
+                    android:textStyle="italic" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewStepRecipes"
