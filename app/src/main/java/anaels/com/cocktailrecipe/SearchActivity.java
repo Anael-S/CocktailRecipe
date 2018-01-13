@@ -124,8 +124,8 @@ public class SearchActivity extends AppCompatActivity {
                         }
                         //We disable the click during the animation
                         int animationTime = 1000;
-                        if (!isSearchLayoutFolded){
-                            animationTime=1; //If the panel is not folded, the animation is instant
+                        if (!isSearchLayoutFolded) {
+                            animationTime = 1; //If the panel is not folded, the animation is instant
                         }
                         isAnimatonRunning = true;
 
@@ -280,24 +280,28 @@ public class SearchActivity extends AppCompatActivity {
 
     private void loadCocktailByName() {
         String lNameCocktail = nameEditText.getText().toString();
-        //We get our recipe from the network
-        RecipeApiHelper.searchCocktailByName(this, lNameCocktail, new RecipeApiHelper.OnCocktailRecipeRecovered() {
-            @Override
-            public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
-                mRecipeList = new ArrayList<DrinkRecipe>();
-                if (recipeList != null && recipeList.size() > 0) {
-                    mRecipeList.addAll(recipeList);
-                } else {
-                    Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
+        if (!lNameCocktail.isEmpty()) {
+            //We get our recipe from the network
+            RecipeApiHelper.searchCocktailByName(this, lNameCocktail, new RecipeApiHelper.OnCocktailRecipeRecovered() {
+                @Override
+                public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
+                    mRecipeList = new ArrayList<DrinkRecipe>();
+                    if (recipeList != null && recipeList.size() > 0) {
+                        mRecipeList.addAll(recipeList);
+                    } else {
+                        Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
+                    }
+                    initRecyclerView();
                 }
-                initRecyclerView();
-            }
-        }, new RecipeApiHelper.OnError() {
-            @Override
-            public void onError() {
-                Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
-            }
-        });
+            }, new RecipeApiHelper.OnError() {
+                @Override
+                public void onError() {
+                    Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            loadEveryCocktails();
+        }
     }
 
     private void loadCocktailByTypeFilter() {
@@ -315,17 +319,57 @@ public class SearchActivity extends AppCompatActivity {
         } else if (checkBoxCocktail.isChecked() && !checkBoxOrdinaryDrink.isChecked()) {
             filterTypeOfDrink = RecipeApiHelper.FILTER_COCKTAIL;
         }
-        //We get our recipe from the network
-        RecipeApiHelper.searchCocktailByFilters(this, filterAlcoholic, filterTypeOfDrink, new RecipeApiHelper.OnCocktailRecipeRecovered() {
+        //We get it by filter if we got some filter, otherwise we load them all
+        if (filterAlcoholic != null || filterTypeOfDrink != null) {
+            RecipeApiHelper.searchCocktailByFilters(this, filterAlcoholic, filterTypeOfDrink, new RecipeApiHelper.OnCocktailRecipeRecovered() {
+                @Override
+                public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
+                    mRecipeList = new ArrayList<DrinkRecipe>();
+                    if (recipeList != null && recipeList.size() > 0) {
+                        mRecipeList.addAll(recipeList);
+                    } else {
+                        Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
+                    }
+                    initRecyclerView();
+                }
+            }, new RecipeApiHelper.OnError() {
+                @Override
+                public void onError() {
+                    Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            loadEveryCocktails();
+        }
+    }
+
+    //HOTFIX - The api is not able to load every recipe so we load every cocktails, then we load every oridnary drink
+    private void loadEveryCocktails() {
+        String filterTypeOfDrink = RecipeApiHelper.FILTER_COCKTAIL;
+        final Activity activity = this;
+        RecipeApiHelper.searchCocktailByFilters(activity, null, filterTypeOfDrink, new RecipeApiHelper.OnCocktailRecipeRecovered() {
             @Override
             public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
                 mRecipeList = new ArrayList<DrinkRecipe>();
                 if (recipeList != null && recipeList.size() > 0) {
                     mRecipeList.addAll(recipeList);
-                } else {
-                    Toast.makeText(mContext, getString(R.string.no_result), Toast.LENGTH_LONG).show();
                 }
                 initRecyclerView();
+                String newFilterTypeOfDrink = RecipeApiHelper.FILTER_ORDINARY_DRINK;
+                RecipeApiHelper.searchCocktailByFilters(activity, null, newFilterTypeOfDrink, new RecipeApiHelper.OnCocktailRecipeRecovered() {
+                    @Override
+                    public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
+                        if (recipeList != null && recipeList.size() > 0) {
+                            mRecipeList.addAll(recipeList);
+                        }
+                        initRecyclerView();
+                    }
+                }, new RecipeApiHelper.OnError() {
+                    @Override
+                    public void onError() {
+                        Toast.makeText(mContext, getString(R.string.no_internet), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         }, new RecipeApiHelper.OnError() {
             @Override

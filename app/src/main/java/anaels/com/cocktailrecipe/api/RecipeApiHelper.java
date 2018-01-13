@@ -59,25 +59,15 @@ public class RecipeApiHelper {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
         String filterUrl = URL_SEARCH_BY_FILTER;
-        //Filter ingredient
-        boolean withoutFilter = true;
         //Filter alcoholic / non alcoholic
         if (filterAlcoholic != null && !filterAlcoholic.isEmpty()) {
             filterUrl += filterAlcoholic;
-            withoutFilter = false;
-            if (filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
-                filterUrl += "&";
-            }
         }
         //Filter type of drink
-        if (withoutFilter && filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
+        if (filterTypeOfDrink != null && !filterTypeOfDrink.isEmpty()) {
             filterUrl += filterTypeOfDrink;
-            withoutFilter = false;
         }
 
-        if (withoutFilter) {
-            filterUrl += "i=";
-        }
         StringRequest requestRecipe = new StringRequest(com.android.volley.Request.Method.GET, BASE_URL_API + API_TOKEN + filterUrl, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
