@@ -25,6 +25,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private final OnItemClickListener listener;
     private boolean isSingleColumn;
 
+    private ImageView imageViewClicked;
+    private TextView textViewClicked;
+
 
     public interface OnItemClickListener {
         void onItemClick(DrinkRecipe item);
@@ -82,11 +85,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 public void onClick(View v) {
                     final int position = getAdapterPosition();
                     if (listRecipe != null && position >= 0 && position <= listRecipe.size() - 1 && listRecipe.get(position) != null) {
+                        imageViewClicked=recipeImageView;
+                        textViewClicked=titleRecipeTextView;
                         listener.onItemClick(listRecipe.get(position));
                     }
                 }
             });
         }
+    }
+
+    public ImageView getImageViewClicked() {
+        return imageViewClicked;
+    }
+
+    public TextView getTextViewClicked() {
+        return textViewClicked;
     }
 
     public void setListRecipe(ArrayList<DrinkRecipe> listRecipe) {

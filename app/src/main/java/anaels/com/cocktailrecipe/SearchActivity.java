@@ -1,5 +1,6 @@
 package anaels.com.cocktailrecipe;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -366,7 +369,13 @@ public class SearchActivity extends AppCompatActivity {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(HomeActivity.KEY_INTENT_RECIPE, item);
                     i.putExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE, listFavRecipe);
-                    startActivity(i);
+                    ActivityOptionsCompat options;
+                    Pair<View, String> p1;
+                    Pair<View, String> p2;
+                    p1 = Pair.create((View) mRecipeAdapter.getImageViewClicked(), "recipeImageView");
+                    p2 = Pair.create((View) mRecipeAdapter.getTextViewClicked(), "titleRecipeTextView");
+                    options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, p1);
+                    startActivity(i, options.toBundle());
                 }
             });
             recyclerViewRecipes.setAdapter(mRecipeAdapter);

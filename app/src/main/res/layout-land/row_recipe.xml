@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:transitionName="recipeImageView"
             android:src="@drawable/placeholder" />
 
         <RelativeLayout
@@ -34,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/extra_small_padding"
-                android:text="Awesome Recipe"
+                android:transitionName="titleRecipeTextView"
                 android:textColor="#ffffff"
                 android:layout_centerInParent="true"
                 android:textStyle="bold" />

@@ -17,6 +17,7 @@
             android:id="@+id/recipeImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionName="recipeImageView"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 
@@ -35,8 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/extra_small_padding"
+                android:transitionName="titleRecipeTextView"
                 android:layout_alignParentStart="true"
-                android:text="Awesome Recipe"
                 android:textColor="#ffffff"
                 android:layout_centerVertical="true"
                 android:textStyle="bold" />
