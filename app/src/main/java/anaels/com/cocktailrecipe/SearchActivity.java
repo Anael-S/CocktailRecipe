@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -52,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @BindView(R.id.recyclerViewRecipes)
     RecyclerView recyclerViewRecipes;
+    @Nullable
     @BindView(R.id.folding_cell)
     FoldingCell foldingCell;
     @BindView(R.id.fabSearch)
@@ -89,7 +91,7 @@ public class SearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         isSearchLayoutFolded = true;
-        isAnimatonRunning=false;
+        isAnimatonRunning = false;
 
         initListeners();
 
@@ -97,7 +99,9 @@ public class SearchActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
-            initRecyclerView();
+            if (mRecipeList != null) {
+                initRecyclerView();
+            }
         }
 
         listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
@@ -105,34 +109,42 @@ public class SearchActivity extends AppCompatActivity {
         getIngredientList();
     }
 
-    private void initListeners(){
+    private void initListeners() {
         //OnClick listeners
-        foldingCell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isAnimatonRunning) {
-                    //We disable the click during the animation
-                    final int animationTime = 1000;
-                    isAnimatonRunning = true;
-
-                    if (isSearchLayoutFolded) {
-                        //We empty the name search
-                        nameEditText.setText("");
-                    }
-                    foldingCell.toggle(!isSearchLayoutFolded);
-                    isSearchLayoutFolded = !isSearchLayoutFolded;
-
-                    //We enable the click after the animation
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    final Runnable r = new Runnable() {
-                        public void run() {
-                            isAnimatonRunning = false;
+        if (foldingCell != null) {
+            foldingCell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isAnimatonRunning) {
+                        if (editTextIngredient.hasFocus()) {
+                            hideSoftKeyboard();
                         }
-                    };
-                    handler.postDelayed(r, animationTime);
+                        //We disable the click during the animation
+                        int animationTime = 1000;
+                        if (!isSearchLayoutFolded){
+                            animationTime=1; //If the panel is not folded, the animation is instant
+                        }
+                        isAnimatonRunning = true;
+
+                        if (isSearchLayoutFolded) {
+                            //We empty the name search
+                            nameEditText.setText("");
+                        }
+                        foldingCell.toggle(!isSearchLayoutFolded);
+                        isSearchLayoutFolded = !isSearchLayoutFolded;
+
+                        //We enable the click after the animation
+                        final Handler handler = new Handler(Looper.getMainLooper());
+                        final Runnable r = new Runnable() {
+                            public void run() {
+                                isAnimatonRunning = false;
+                            }
+                        };
+                        handler.postDelayed(r, animationTime);
+                    }
                 }
-            }
-        });
+            });
+        }
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +185,7 @@ public class SearchActivity extends AppCompatActivity {
      * Hides the soft keyboard
      */
     public void hideSoftKeyboard() {
-        if(getCurrentFocus()!=null) {
+        if (getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
@@ -219,8 +231,8 @@ public class SearchActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void initRecyclerViewFilter(){
-        if (mFilterAdapter == null){
+    private void initRecyclerViewFilter() {
+        if (mFilterAdapter == null) {
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.HORIZONTAL, false);
             recyclerViewIngredientFilter.setLayoutManager(layoutManager);
@@ -322,7 +334,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void loadCocktailByIngredient() {
         //We get our recipe from the network
-        RecipeApiHelper.searchCocktailByIngredients(this,null, listFilterIngredient, new RecipeApiHelper.OnCocktailRecipeRecovered() {
+        RecipeApiHelper.searchCocktailByIngredients(this, null, listFilterIngredient, new RecipeApiHelper.OnCocktailRecipeRecovered() {
             @Override
             public void onCocktailRecipeRecovered(ArrayList<DrinkRecipe> recipeList) {
                 mRecipeList = new ArrayList<DrinkRecipe>();
