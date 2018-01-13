@@ -35,11 +35,6 @@
             android:theme="@style/AppTheme"
             android:parentActivityName=".HomeActivity">
         </activity>
-        <activity
-            android:name=".StepActivity"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".RecipeActivity">
-        </activity>
 
         <receiver android:name=".widget.RecipeWidgetProvider">
             <intent-filter>

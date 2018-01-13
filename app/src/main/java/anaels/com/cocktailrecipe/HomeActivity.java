@@ -153,6 +153,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             //We get our updated fav list without accessing the DB again
             if (FavoriteHelper.getFavorite(this) != null && !FavoriteHelper.getFavorite(this).isEmpty()) {
                 mRecipeList = FavoriteHelper.getFavorite(this);
+                mFavoriteRecipeList = mRecipeList;
                 initRecyclerView();
             } else { //If its empty, we check in our DB, if still empty then we reset some random recipe with our loader
                 getLoaderManager().initLoader(RECIPE_DB, null, this);
