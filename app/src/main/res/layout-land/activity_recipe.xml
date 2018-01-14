@@ -22,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transitionName="recipeImageView"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder" />
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
