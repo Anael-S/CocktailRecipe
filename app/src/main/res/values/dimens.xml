@@ -25,6 +25,7 @@
     <dimen name="extra_small_padding">4dp</dimen>
     <dimen name="extra_extra_small_padding">2dp</dimen>
     <dimen name="height_picture_recipe">100dp</dimen>
+    <integer name="number_column_home">1</integer>
 
     <dimen name="fav_icon_size">50dp</dimen>
 

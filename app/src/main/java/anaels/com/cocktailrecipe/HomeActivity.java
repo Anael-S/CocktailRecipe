@@ -76,10 +76,10 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //Orientation
         int orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            layoutManagerRecyclerView = new LinearLayoutManager(this);
-        } else {
-            layoutManagerRecyclerView = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManagerRecyclerView = new GridLayoutManager(this, getResources().getInteger(R.integer.number_column_home), LinearLayoutManager.HORIZONTAL, false);
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManagerRecyclerView = new GridLayoutManager(this, getResources().getInteger(R.integer.number_column_home));
         }
 
         //Button onClick
@@ -102,6 +102,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice("51CE1F2EACEE1C8EB4FBA9B4F0F2098F") //Phone
+                .addTestDevice("3FA0ACCC8A4E195EE4C1BD13BD8BECED") //S2
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) //Emulator
                 .build();
         mAdView.loadAd(adRequest);
 
@@ -127,9 +129,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            layoutManagerRecyclerView = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            layoutManagerRecyclerView = new GridLayoutManager(this, getResources().getInteger(R.integer.number_column_home), LinearLayoutManager.HORIZONTAL, false);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            layoutManagerRecyclerView = new LinearLayoutManager(this);
+            layoutManagerRecyclerView = new GridLayoutManager(this, getResources().getInteger(R.integer.number_column_home));
         }
         initRecyclerView(true);
     }
