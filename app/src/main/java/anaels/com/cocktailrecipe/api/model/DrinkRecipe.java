@@ -155,17 +155,17 @@ public class DrinkRecipe implements Parcelable {
             if (splittedInstructions.length > 1) {
                 for (String lInstruction : splittedInstructions) {
                     if (lInstruction != null && !lInstruction.isEmpty()) {
-                        listInstructions.add(lInstruction);
+                        listInstructions.add(lInstruction.trim());
                     }
                 }
             } else if (splittedInstructionsBackUp.length > 1) {
                 for (String lInstruction : splittedInstructionsBackUp) {
                     if (lInstruction != null && !lInstruction.isEmpty() && lInstruction.length() > 2) {
-                        listInstructions.add(lInstruction);
+                        listInstructions.add(lInstruction.trim());
                     }
                 }
             }else {
-                listInstructions.add(fullInstructions);
+                listInstructions.add(fullInstructions.trim());
             }
         }
         return listInstructions;

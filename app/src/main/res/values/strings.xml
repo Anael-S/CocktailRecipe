@@ -29,7 +29,7 @@
     <string name="action_search">Search</string>
 
     <string name="cocktail_name">Name:</string>
-    <string name="cocktail_ingredient">Ingredient:</string>
+    <string name="cocktail_ingredient">Ingredients:</string>
 
     <string name="filter_alcoholic">Alcoholic</string>
     <string name="filter_non_alcoholic">Non-Alcoholic</string>

@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -21,6 +22,10 @@ import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static DrinkRecipe mRecipe;
+    static int randomNumber;
+
+    protected static final String KEY_INTENT_RECIPE_INGREDIENT_WIDGET = "keyIntentRecipeIngredientWidget";
+    protected static final String KEY_INTENT_RECIPE_STEP_WIDGET = "keyIntentRecipeStepWidget";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -35,28 +40,36 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         if (mRecipe == null) {
             views.setTextViewText(R.id.titleRecipeTextView, context.getString(R.string.choose_recipe));
             views.setViewVisibility(R.id.addToWidgetIcon, View.VISIBLE);
-            views.setViewVisibility(R.id.layoutIngredient, View.GONE);
+            views.setViewVisibility(R.id.recipeLayout, View.GONE);
         } else {
-            //TODO : update this piece of code with a proper listview
             //name
             views.setTextViewText(R.id.titleRecipeTextView, mRecipe.getStrDrink());
 
             //Visibility
             views.setViewVisibility(R.id.addToWidgetIcon, View.GONE);
-            views.setViewVisibility(R.id.layoutIngredient, View.VISIBLE);
+            views.setViewVisibility(R.id.recipeLayout, View.VISIBLE);
+
 
             //ListView ingredients
-            views.removeAllViews(R.id.listViewIngredientsRecipes);
-            for (String ingredient : mRecipe.getIngredients()) {
-                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(), R.layout.row_ingredient_widget);
-                rvIngredient.setTextViewText(R.id.tv_recipe_widget_ingredient_item, ingredient);
-                views.addView(R.id.listViewIngredientsRecipes, rvIngredient);
-            }
+            randomNumber=(int)(Math.random()*1000);
+            Intent intentIngredients=new Intent(context, IngredientService.class);
+            intentIngredients.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intentIngredients.setData(Uri.fromParts("content", String.valueOf(appWidgetId+randomNumber), null));
+            intentIngredients.putExtra(KEY_INTENT_RECIPE_INGREDIENT_WIDGET,mRecipe.getIngredients());
+            views.setRemoteAdapter(R.id.listViewIngredientsRecipes, intentIngredients);
+
+            //ListView steps
+            randomNumber=(int)(Math.random()*1000);
+            Intent intentSteps=new Intent(context, StepService.class);
+            intentSteps.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intentSteps.setData(Uri.fromParts("content", String.valueOf(appWidgetId+randomNumber), null));
+            intentSteps.putExtra(KEY_INTENT_RECIPE_STEP_WIDGET,mRecipe.getSteps());
+            views.setRemoteAdapter(R.id.listViewStepsRecipes, intentSteps);
 
             //OnClick
             Intent intentRecipe = new Intent(context, RecipeActivity.class);
             intentRecipe.putExtra(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
-            PendingIntent pendingIntentRecipe = PendingIntent.getActivity(context, 0, intentRecipe, 0);
+            PendingIntent pendingIntentRecipe = PendingIntent.getActivity(context, 0, intentRecipe, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widgetLayout, pendingIntentRecipe);
         }
 

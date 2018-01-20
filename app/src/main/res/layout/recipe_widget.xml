@@ -3,7 +3,7 @@
     android:id="@+id/widgetLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_light_background"
+    android:background="@drawable/gradient_card_light_background"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
@@ -30,24 +30,42 @@
         android:src="@drawable/ic_add_to_widget_black"
         android:visibility="gone" />
 
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/layoutIngredient"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/extra_small_padding">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/widget_internal_margin"
+        android:paddingBottom="@dimen/widget_internal_margin"
+        android:paddingEnd="@dimen/widget_internal_margin"
+        android:weightSum="2">
 
-        <LinearLayout
+        <ListView
             android:id="@+id/listViewIngredientsRecipes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewIngredients"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/extra_extra_small_padding"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/extra_small_padding"
+            android:paddingRight="@dimen/extra_small_padding"
+            android:background="@drawable/listview_widget_bg"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/row_ingredient_widget" />
+
+        <ListView
+            android:id="@+id/listViewStepsRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/small_padding"
+            android:background="@drawable/listview_widget_bg"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="@dimen/extra_small_padding"
             android:paddingRight="@dimen/extra_small_padding"
             android:scrollbars="vertical"
             tools:listitem="@layout/row_ingredient_widget" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

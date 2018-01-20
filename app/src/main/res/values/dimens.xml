@@ -45,6 +45,8 @@
     <dimen name="item_recipe_width">200dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_internal_margin">4dp</dimen>
+    <dimen name="widget_listview_size">50dp</dimen>
 
     <integer name="number_column_search">2</integer>
 
