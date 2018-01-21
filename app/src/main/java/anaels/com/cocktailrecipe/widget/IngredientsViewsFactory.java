@@ -1,9 +1,7 @@
 package anaels.com.cocktailrecipe.widget;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -11,6 +9,9 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.R;
 
+/**
+ * Factory used to create the listview of ingredient in the widget
+ */
 public class IngredientsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private ArrayList<String> items;
     private Context ctxt = null;

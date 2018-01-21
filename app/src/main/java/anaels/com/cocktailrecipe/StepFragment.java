@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;

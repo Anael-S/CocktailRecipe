@@ -5,6 +5,9 @@ import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 
+/**
+ * Service used to populate the listview of step in the widget
+ */
 public class StepService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

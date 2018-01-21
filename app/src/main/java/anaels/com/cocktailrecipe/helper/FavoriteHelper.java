@@ -11,13 +11,18 @@ import java.util.ArrayList;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 
 /**
- * Created by Anael on 10/24/2017.
+ * Helper to manage the favorites
  */
 public class FavoriteHelper {
     private static final String MyPREFERENCES = "RecipeFavorite";
 
     public static final String KEY_FAVORITE = "keyFav";
 
+    /**
+     * Write the current favorite list inside the shared pref
+     * @param context the context
+     * @param listRecipe the list of recipe to save
+     */
     public static void setFavorite(Context context, ArrayList<DrinkRecipe> listRecipe) {
         SharedPreferences sharedPref = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -26,7 +31,11 @@ public class FavoriteHelper {
         editor.apply();
     }
 
-
+    /**
+     * Recover the list of favorite previously stored in the Shared Pref
+     * @param context the context
+     * @return the recipe list
+     */
     public static ArrayList<DrinkRecipe> getFavorite(Context context) {
         ArrayList<DrinkRecipe> listRecipe;
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);

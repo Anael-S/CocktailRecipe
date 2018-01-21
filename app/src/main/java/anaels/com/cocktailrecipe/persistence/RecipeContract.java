@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Contract for the movie DB
+ * Contract for the Recipe DB
  */
 public class RecipeContract {
 

@@ -21,6 +21,9 @@ import anaels.com.cocktailrecipe.R;
 import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 
 
+/**
+ * Display the ingredient on auto suggestion
+ */
 public class IngredientPresenter extends RecyclerViewPresenter<String> {
 
     protected Adapter adapter;

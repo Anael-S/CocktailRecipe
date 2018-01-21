@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.util.Log;
 
 /**
- * Provider for the Movie DB
+ * Provider for the Recipe DB
  */
 public class RecipesProvider extends ContentProvider{
 	private static final String LOG_TAG = RecipesProvider.class.getSimpleName();

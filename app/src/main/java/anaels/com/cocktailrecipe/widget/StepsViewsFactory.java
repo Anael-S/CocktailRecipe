@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.R;
 
+/**
+ * Factory used to create the listview of steps in the widget
+ */
 public class StepsViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private ArrayList<String> items;
     private Context ctxt = null;

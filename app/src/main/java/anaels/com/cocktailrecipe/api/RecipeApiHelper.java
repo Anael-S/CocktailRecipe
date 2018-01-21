@@ -55,6 +55,14 @@ public class RecipeApiHelper {
         return URL_IMAGE_INGREDIENT + ingredient + URL_IMAGE_INGREDIENT2;
     }
 
+    /**
+     * Recover the cocktail recipes by filters (checkbox on the screen)
+     * @param context the context
+     * @param filterAlcoholic alcoholics / non alcoholics
+     * @param filterTypeOfDrink cocktails/ ordinary drink
+     * @param onCocktailRecipeRecovered callback
+     * @param onError callback
+     */
     public static void searchCocktailByFilters(Context context, String filterAlcoholic, String filterTypeOfDrink, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
@@ -146,6 +154,12 @@ public class RecipeApiHelper {
         queueVolley.add(requestRecipe);
     }
 
+    /**
+     * Get all the ingredients from the API
+     * @param context the context
+     * @param onIngredientListRecovered callback
+     * @param onError callback
+     */
     public static void getIngredientList(Context context, final OnIngredientListRecovered onIngredientListRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
@@ -176,6 +190,13 @@ public class RecipeApiHelper {
         queueVolley.add(requestRecipe);
     }
 
+    /**
+     * Get all the cocktails recipes by name
+     * @param context the context
+     * @param cocktailName the name
+     * @param onCocktailRecipeRecovered callback
+     * @param onError callback
+     */
     public static void searchCocktailByName(Context context, String cocktailName, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);
@@ -204,6 +225,13 @@ public class RecipeApiHelper {
         queueVolley.add(requestRecipe);
     }
 
+    /**
+     * Search coktail recipe by ID
+     * @param context the context
+     * @param cocktailId the id
+     * @param onCocktailRecipeRecovered callback
+     * @param onError callback
+     */
     public static void searchCocktailById(Context context, String cocktailId, final OnCocktailRecipeRecovered onCocktailRecipeRecovered, final OnError onError) {
         RequestQueue queueVolley;
         queueVolley = Volley.newRequestQueue(context);

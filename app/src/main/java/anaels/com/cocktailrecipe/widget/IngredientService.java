@@ -5,6 +5,9 @@ import android.widget.RemoteViewsService;
 
 import java.util.ArrayList;
 
+/**
+ * Service used to populate the listview of ingredient in the widget
+ */
 public class IngredientService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

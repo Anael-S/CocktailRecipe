@@ -17,7 +17,7 @@ import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
 
 
 /**
- * Implementation of App Widget functionality.
+ * Implementation of App Widget functionality for our recipe
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
