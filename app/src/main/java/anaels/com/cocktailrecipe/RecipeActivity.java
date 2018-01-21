@@ -137,7 +137,7 @@ public class RecipeActivity extends AppCompatActivity {
         //UI
         if (mRecipe != null) {
             titleRecipeTextView.setText(mRecipe.getStrDrink());
-            Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).into(recipeImageView);
+            Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).placeholder( R.drawable.anim_loading ).into(recipeImageView);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(mRecipe.getStrDrink());
