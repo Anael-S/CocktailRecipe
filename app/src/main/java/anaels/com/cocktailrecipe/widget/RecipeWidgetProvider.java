@@ -69,6 +69,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             //OnClick
             Intent intentRecipe = new Intent(context, RecipeActivity.class);
             intentRecipe.putExtra(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
+            intentRecipe.putExtra(RecipeActivity.KEY_INTENT_FROM_WIDGET, true);
+            intentRecipe.putExtra(RecipeActivity.KEY_INTENT_IS_FAV, mRecipe.isFav());
             PendingIntent pendingIntentRecipe = PendingIntent.getActivity(context, 0, intentRecipe, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widgetLayout, pendingIntentRecipe);
         }

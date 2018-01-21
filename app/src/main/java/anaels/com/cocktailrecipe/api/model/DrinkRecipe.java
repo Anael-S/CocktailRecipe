@@ -547,6 +547,17 @@ public class DrinkRecipe implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DrinkRecipe recipe = (DrinkRecipe) o;
+
+        return idDrink != null ? idDrink.equals(recipe.idDrink) : recipe.idDrink == null;
+
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -593,20 +604,10 @@ public class DrinkRecipe implements Parcelable {
         dest.writeString(this.strMeasure14);
         dest.writeString(this.strMeasure15);
         dest.writeString(this.dateModified);
+        dest.writeByte(this.isFav ? (byte) 1 : (byte) 0);
         dest.writeStringList(this.listInstructions);
         dest.writeStringList(this.listIngredients);
         dest.writeStringList(this.listMeasures);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DrinkRecipe recipe = (DrinkRecipe) o;
-
-        return idDrink != null ? idDrink.equals(recipe.idDrink) : recipe.idDrink == null;
-
     }
 
     protected DrinkRecipe(Parcel in) {
@@ -650,6 +651,7 @@ public class DrinkRecipe implements Parcelable {
         this.strMeasure14 = in.readString();
         this.strMeasure15 = in.readString();
         this.dateModified = in.readString();
+        this.isFav = in.readByte() != 0;
         this.listInstructions = in.createStringArrayList();
         this.listIngredients = in.createStringArrayList();
         this.listMeasures = in.createStringArrayList();

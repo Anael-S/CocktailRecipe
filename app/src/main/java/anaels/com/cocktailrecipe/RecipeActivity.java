@@ -41,6 +41,8 @@ public class RecipeActivity extends AppCompatActivity {
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
+    public static final String KEY_INTENT_FROM_WIDGET = "keyIntentFromWidget";
+    public static final String KEY_INTENT_IS_FAV = "keyIntentIsFav";
 
     @BindView(R.id.recipeImageView)
     ImageView recipeImageView;
@@ -55,6 +57,9 @@ public class RecipeActivity extends AppCompatActivity {
 
     private ArrayList<DrinkRecipe> listFavRecipe;
 
+    private Boolean isComingFromWidget;
+    private boolean isFromWidgetAndFav;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class RecipeActivity extends AppCompatActivity {
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
         mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
+        isComingFromWidget = getIntent().getBooleanExtra(KEY_INTENT_FROM_WIDGET, false);
+        isFromWidgetAndFav = getIntent().getBooleanExtra(KEY_INTENT_IS_FAV, false);
 
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
@@ -95,12 +102,6 @@ public class RecipeActivity extends AppCompatActivity {
             });
         }
 
-        //favorite
-        if (listFavRecipe.contains(mRecipe)) {
-            favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
-        } else {
-            favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
-        }
         favoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,12 +110,15 @@ public class RecipeActivity extends AppCompatActivity {
                 bounceAnimation.setInterpolator(new BounceInterpolator());
                 favoriteImageView.startAnimation(bounceAnimation);
                 //if the movie is already in our favorite, we remove it
-                if (listFavRecipe.contains(mRecipe)) {
+                if (listFavRecipe.contains(mRecipe) || isFromWidgetAndFav) {
                     listFavRecipe.remove(mRecipe);
+                    mRecipe.setFav(false);
+                    isFromWidgetAndFav = false;
                     favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
                     RecipesDBHelper.removeFromFavorite(mRecipe, getContentResolver());
                     Snackbar.make(favoriteImageView, R.string.removed_from_fav, Snackbar.LENGTH_LONG).show();
                 } else { //otherwise we just add it
+                    mRecipe.setFav(true);
                     listFavRecipe.add(mRecipe);
                     favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
                     RecipesDBHelper.addToFavorite(mRecipe, getContentResolver());
@@ -122,6 +126,19 @@ public class RecipeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Set the right icon for the favorite button
+     */
+    private void setFavoriteIcon(){
+        if (listFavRecipe.contains(mRecipe) || isFromWidgetAndFav) {
+            favoriteImageView.setImageResource(R.drawable.ic_filled_heart);
+            mRecipe.setFav(true);
+        } else {
+            favoriteImageView.setImageResource(R.drawable.ic_empty_heart);
+            mRecipe.setFav(false);
+        }
     }
 
     @Override
@@ -132,6 +149,10 @@ public class RecipeActivity extends AppCompatActivity {
 
     private void loadUI(Bundle savedInstanceState) {
         //UI
+        //favorite
+        setFavoriteIcon();
+
+        //Recipe
         if (mRecipe != null) {
             titleRecipeTextView.setText(mRecipe.getStrDrink());
             Picasso.with(mContext).load(mRecipe.getStrDrinkThumb()).placeholder( R.drawable.anim_loading ).into(recipeImageView);
@@ -141,7 +162,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
         }
 
-        //To avoid the double onCreateView claa, we check if this is just a screen roation
+        //To avoid the double onCreateView call, we check if this is just a screen roation
         if (savedInstanceState == null) {
             fragmentRecipe = new RecipeFragment();
             Bundle bundle = new Bundle();
@@ -176,10 +197,21 @@ public class RecipeActivity extends AppCompatActivity {
                 mContext.sendBroadcast(intent);
             }
         } else if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isComingFromWidget){
+            Intent intent = new Intent(this, HomeActivity.class);
+            finish();
+            startActivity(intent);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
