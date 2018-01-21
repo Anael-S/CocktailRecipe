@@ -37,6 +37,7 @@ import anaels.com.cocktailrecipe.adapter.IngredientPresenter;
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
+import anaels.com.cocktailrecipe.helper.FavoriteHelper;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,9 +108,13 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        listFavRecipe = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_FAV_RECIPE);
-
         getIngredientList();
+    }
+
+    @Override
+    protected void onResume() {
+        listFavRecipe = FavoriteHelper.getFavorite(this);
+        super.onResume();
     }
 
     private void initListeners() {
