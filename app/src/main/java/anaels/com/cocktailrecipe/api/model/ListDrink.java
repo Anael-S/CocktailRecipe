@@ -4,7 +4,9 @@ package anaels.com.cocktailrecipe.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,7 +17,16 @@ public class ListDrink implements Parcelable {
     private List<DrinkRecipe> drinkRecipes = null;
 
     public List<DrinkRecipe> getDrinkRecipes() {
-        return drinkRecipes;
+        //HOTFIX - we filter the recipe without picture (public API = fake data 99% of the time without picture)
+        List<DrinkRecipe> drinkRecipesFinal = new ArrayList<>();
+        if (drinkRecipes != null) {
+            for (DrinkRecipe lRecipe : drinkRecipes) {
+                if (lRecipe.getStrDrinkThumb() != null && !lRecipe.getStrDrinkThumb().isEmpty()) {
+                    drinkRecipesFinal.add(lRecipe);
+                }
+            }
+        }
+        return drinkRecipesFinal;
     }
 
     public void setDrinkRecipes(List<DrinkRecipe> drinkRecipes) {
