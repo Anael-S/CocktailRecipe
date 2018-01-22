@@ -43,4 +43,17 @@
     <string name="id_pub_banner">ca-app-pub-8725338676350366/9956765788</string>
 
     <string name="google_app_id">1:980201246019:android:82b3fed5cd9a9db9</string>
+
+
+
+    <!--CONTENT DESCRIPTION-->
+    <string name="placeholder_cocktail">Placeholder recipe</string>
+    <string name="recipe_picture">Recipe picture</string>
+    <string name="add_to_widget_icon">Icon add to widget</string>
+    <string name="icon_delete">Icon delete</string>
+    <string name="ingredient_picture">Ingredient picture</string>
+    <string name="icon_favorite">Icon favorite</string>
+    <string name="unfold_icon">Unfold icon</string>
+    <string name="fold_icon">Fold icon</string>
 </resources>
+

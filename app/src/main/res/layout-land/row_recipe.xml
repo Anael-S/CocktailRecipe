@@ -17,6 +17,7 @@
             android:id="@+id/recipeImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/recipe_picture"
             android:scaleType="centerCrop"
             android:transitionName="recipeImageView" />
 

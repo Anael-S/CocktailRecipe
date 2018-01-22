@@ -148,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:contentDescription="@string/placeholder_cocktail"
             android:alpha="0.1"
             android:src="@drawable/placeholder_cocktail" />
 
