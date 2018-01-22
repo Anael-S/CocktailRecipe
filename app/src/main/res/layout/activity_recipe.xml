@@ -37,7 +37,7 @@
                     android:textColor="#ffffff"
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/text_size_recipe_title"
-                    android:layout_toLeftOf="@+id/favoriteImageView"
+                    android:layout_toStartOf="@+id/favoriteImageView"
                     android:textStyle="italic" />
 
                 <ImageView

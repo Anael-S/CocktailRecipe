@@ -52,8 +52,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewIngredients"
                     android:layout_marginTop="@dimen/extra_extra_small_padding"
-                    android:paddingLeft="@dimen/extra_small_padding"
-                    android:paddingRight="@dimen/extra_small_padding"
+                    android:paddingStart="@dimen/extra_small_padding"
+                    android:paddingEnd="@dimen/extra_small_padding"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>

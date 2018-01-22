@@ -39,7 +39,7 @@
                     android:layout_centerVertical="true"
                     android:transitionName="titleRecipeTextView"
                     android:layout_marginStart="10dp"
-                    android:layout_toLeftOf="@+id/favoriteImageView"
+                    android:layout_toStartOf="@+id/favoriteImageView"
                     android:padding="@dimen/small_padding"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/text_size_recipe_title"

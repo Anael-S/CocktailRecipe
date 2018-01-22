@@ -49,8 +49,8 @@
             android:layout_marginTop="@dimen/extra_extra_small_padding"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/extra_small_padding"
-            android:paddingRight="@dimen/extra_small_padding"
+            android:paddingStart="@dimen/extra_small_padding"
+            android:paddingEnd="@dimen/extra_small_padding"
             android:background="@drawable/listview_widget_bg"
             android:scrollbars="vertical"
             tools:listitem="@layout/row_ingredient_widget" />
@@ -63,8 +63,8 @@
             android:background="@drawable/listview_widget_bg"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/extra_small_padding"
-            android:paddingRight="@dimen/extra_small_padding"
+            android:paddingStart="@dimen/extra_small_padding"
+            android:paddingEnd="@dimen/extra_small_padding"
             android:scrollbars="vertical"
             tools:listitem="@layout/row_ingredient_widget" />
     </LinearLayout>

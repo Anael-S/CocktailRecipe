@@ -49,8 +49,7 @@
                 android:layout_centerVertical="true"
                 android:paddingEnd="@dimen/extra_small_padding"
                 android:paddingStart="@dimen/extra_large_padding"
-                android:visibility="gone"
-                android:text="16" />
+                android:visibility="gone" />
 
         </RelativeLayout>
 
