@@ -29,6 +29,10 @@ public class ListDrink implements Parcelable {
         return drinkRecipesFinal;
     }
 
+    public List<DrinkRecipe> getDrinkRecipesWithoutPic() {
+        return drinkRecipes;
+    }
+
     public void setDrinkRecipes(List<DrinkRecipe> drinkRecipes) {
         this.drinkRecipes = drinkRecipes;
     }

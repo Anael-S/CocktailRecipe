@@ -110,7 +110,7 @@ public class IngredientPresenter extends RecyclerViewPresenter<String> {
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             if (isEmpty()) {
-                holder.ingredientName.setText("No result");
+                holder.ingredientName.setText(R.string.no_result);
                 holder.root.setOnClickListener(null);
                 holder.imageIngredient.setVisibility(View.GONE);
                 return;

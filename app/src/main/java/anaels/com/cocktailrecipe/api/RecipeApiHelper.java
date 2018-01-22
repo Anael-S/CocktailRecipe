@@ -170,7 +170,7 @@ public class RecipeApiHelper {
                 }.getType();
                 ListDrink drinkList = SerializeHelper.deserializeJson(response, returnType);
                 ArrayList<String> ingredientList = new ArrayList<>();
-                for (DrinkRecipe lRecipe : drinkList.getDrinkRecipes()) {
+                for (DrinkRecipe lRecipe : drinkList.getDrinkRecipesWithoutPic()) {
                     if (lRecipe != null && !lRecipe.getStrIngredient1().isEmpty()) {
                         ingredientList.add(lRecipe.getStrIngredient1());
                     }
