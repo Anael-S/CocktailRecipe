@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,22 +25,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.otaliastudios.autocomplete.Autocomplete;
 import com.otaliastudios.autocomplete.AutocompleteCallback;
 import com.otaliastudios.autocomplete.AutocompletePresenter;
 import com.ramotion.foldingcell.FoldingCell;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import anaels.com.cocktailrecipe.adapter.FilterAdapter;
@@ -49,10 +37,8 @@ import anaels.com.cocktailrecipe.adapter.IngredientPresenter;
 import anaels.com.cocktailrecipe.adapter.RecipeAdapter;
 import anaels.com.cocktailrecipe.api.RecipeApiHelper;
 import anaels.com.cocktailrecipe.api.model.DrinkRecipe;
-import anaels.com.cocktailrecipe.api.model.ListDrink;
 import anaels.com.cocktailrecipe.helper.FavoriteHelper;
 import anaels.com.cocktailrecipe.helper.InternetConnectionHelper;
-import anaels.com.cocktailrecipe.helper.SerializeHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -122,9 +108,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
-        //RM FIXME PoC only, get the ingredient with async task
-//        getIngredientList();
-        getIngredientListAsyncTask();
+        getIngredientList();
     }
 
     @Override
@@ -226,88 +210,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onError() {
             }
         });
-    }
-
-    /**
-     * Get all the ingredients from the API but with an Asynctask
-     */
-    AsyncTask<Void, Void, ArrayList<String>> asyncTaskIngredients;
-
-    private void getIngredientListAsyncTask() {
-        final String BASE_URL_API = "http://www.thecocktaildb.com/api/json/v1/";
-        final String API_TOKEN = BuildConfig.API_KEY + "/";
-        final String URL_LIST_INGREDIENTS = "list.php?i=list";
-        if (asyncTaskIngredients != null) {
-            asyncTaskIngredients.cancel(true);
-        }
-        asyncTaskIngredients = new AsyncTask<Void, Void, ArrayList<String>>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected ArrayList<String> doInBackground(Void... par) {
-                String result;
-                String inputLine;
-                try {
-                    //Create a URL object holding our url
-                    URL myUrl = new URL(BASE_URL_API + API_TOKEN + URL_LIST_INGREDIENTS);
-                    //Create a connection
-                    HttpURLConnection connection = (HttpURLConnection)
-                            myUrl.openConnection();
-                    //Set methods and timeouts
-                    connection.setRequestMethod("GET");
-                    connection.setReadTimeout(15000);
-                    connection.setConnectTimeout(15000);
-
-                    //Connect to our url
-                    connection.connect();
-
-                    //Create a new InputStreamReader
-                    InputStreamReader streamReader = new
-                            InputStreamReader(connection.getInputStream());
-                    //Create a new buffered reader and String Builder
-                    BufferedReader reader = new BufferedReader(streamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    //Check if the line we are reading is not null
-                    while ((inputLine = reader.readLine()) != null) {
-                        stringBuilder.append(inputLine);
-                    }
-                    //Close our InputStream and Buffered reader
-                    reader.close();
-                    streamReader.close();
-                    //Set our result equal to our stringBuilder
-                    result = stringBuilder.toString();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    result = null;
-                }
-
-                if (result != null) {
-                    Type returnType = new TypeToken<ListDrink>() {
-                    }.getType();
-                    ListDrink drinkList = SerializeHelper.deserializeJson(result, returnType);
-                    ArrayList<String> ingredientList = new ArrayList<>();
-                    if (drinkList != null) {
-                        for (DrinkRecipe lRecipe : drinkList.getDrinkRecipesWithoutPic()) {
-                            if (lRecipe != null && !lRecipe.getStrIngredient1().isEmpty()) {
-                                ingredientList.add(lRecipe.getStrIngredient1());
-                            }
-                        }
-                    }
-                    return ingredientList;
-                }
-
-                return new ArrayList<String>();
-            }
-
-            @Override
-            protected void onPostExecute(ArrayList<String> ingredientList) {
-                super.onPostExecute(ingredientList);
-                setupIngredientAutocomplete(ingredientList);
-            }
-        }.execute();
     }
 
     private void setupIngredientAutocomplete(ArrayList<String> ingredientList) {
