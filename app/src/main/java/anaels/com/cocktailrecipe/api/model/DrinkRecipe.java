@@ -232,6 +232,9 @@ public class DrinkRecipe implements Parcelable {
     }
 
     public String getStrDrink() {
+        if (strDrink != null && strDrink.contains("http://")){
+            strDrink = strDrink.replace("http://", "https://");
+        }
         return strDrink;
     }
 
@@ -288,6 +291,9 @@ public class DrinkRecipe implements Parcelable {
     }
 
     public String getStrDrinkThumb() {
+        if (strDrinkThumb != null && strDrinkThumb.contains("http://")){
+            strDrinkThumb = strDrinkThumb.replace("http://", "https://");
+        }
         return strDrinkThumb;
     }
 
