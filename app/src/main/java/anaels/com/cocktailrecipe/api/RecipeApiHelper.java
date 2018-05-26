@@ -1,6 +1,7 @@
 package anaels.com.cocktailrecipe.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -23,7 +24,7 @@ import anaels.com.cocktailrecipe.helper.SerializeHelper;
  */
 public class RecipeApiHelper {
 
-    private static final String BASE_URL_API = "http://www.thecocktaildb.com/api/json/v1/";
+    private static final String BASE_URL_API = "https://www.thecocktaildb.com/api/json/v1/";
     private static final String API_TOKEN = BuildConfig.API_KEY + "/";
     private static final String URL_RANDOM_RECIPE = "random.php";
     private static final String URL_SEARCH_BY_NAME = "search.php?s=";
@@ -31,7 +32,7 @@ public class RecipeApiHelper {
     private static final String URL_SEARCH_BY_FILTER = "filter.php?";
     private static final String URL_DETAIL_COCKTAIL = "lookup.php?i=";
     private static final String URL_LIST_INGREDIENTS = "list.php?i=list";
-    private static final String URL_IMAGE_INGREDIENT = "http://www.thecocktaildb.com/images/ingredients/";
+    private static final String URL_IMAGE_INGREDIENT = "https://www.thecocktaildb.com/images/ingredients/";
     private static final String URL_IMAGE_INGREDIENT2 = "-Small.png";
     public static final String FILTER_ALCOHOLIC = "a=Alcoholic";
     public static final String FILTER_NON_ALCOHOLIC = "a=Non_Alcoholic";
